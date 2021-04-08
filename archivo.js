@@ -14,6 +14,7 @@ var broadcastBinario= new Array(32);
 var broadcastDecimal= new Array();
 var redBinario= new Array(32);
 var redDecimal= new Array();
+var rango= new Array();
 
 function recibirDatos(){
     ip1=parseInt(document.getElementById("ip1").value);
@@ -26,6 +27,7 @@ function recibirDatos(){
     obtenerIp();
     obtenerMascara();
     obtenerBroadCast();
+    obtenerRed();
 }
 
 function obtenerMascara(){
@@ -77,13 +79,14 @@ function obtenerBroadCast(){
 function obtenerRed(){
 
     for(var i=0;i<32;i++){
-        if(ipBinario[i]&&mask[i]==1){
-            red[i]=1;
+        if(ipBinario[i]&&maskBinario[i]==1){
+            redBinario[i]=1;
         }else{
-            red[i]=0;
+            redBinario[i]=0;
         }
 
     }
+    redDecimal=binarioADecimal(redBinario);
 }
 
 function decimalABinario(ip){
@@ -187,6 +190,36 @@ function decimalAString(decimal){
     return cadenaDecimal;
 }
 
+function obtenerRangoDirecciones(){
+    var host1= new Array(), host2= new Array(), hostd1, hostd2;
+
+    host1=[].concat(redBinario);
+    host2=[].concat(broadcastBinario);
+    host1[31]=1;
+    host2[31]=0;
+    hostd1=binarioADecimal(host1);
+    hostd2=binarioADecimal(host2);
+
+    rango.push(hostd1);
+    rango.push(hostd2);
+}
+
+function obtenerListadoDireccionesHost(){
+    var rangoCopy=[].concat(rango);
+    var direcciones=decimalAString(rangoCopy[0])+"//";
+    console.log(direcciones);
+    for(var i=0;i<dirHost;i++){
+
+        rango[0][3]=rangoCopy[0][3]+1;
+        direcciones+=decimalAString(rangoCopy[0])+"// \n";
+        console.log(direcciones);
+    }
+    direcciones+=decimalAString(rangoCopy[1]);
+    console.log(direcciones);
+    
+    return direcciones;
+}
+
 
 function primerPunto(){
     recibirDatos();
@@ -195,6 +228,13 @@ function primerPunto(){
     document.getElementById("r3").innerHTML=netId;
     document.getElementById("r4").innerHTML=hostId;
     document.getElementById("r5").innerHTML=dirHost;
+    obtenerRangoDirecciones();
+    document.getElementById("r6").innerHTML=decimalAString(redDecimal);
+    document.getElementById("r7").innerHTML=decimalAString(rango[0]);
+    document.getElementById("r8").innerHTML=decimalAString(rango[1]);
+    document.getElementById("r9").innerHTML=decimalAString(broadcastDecimal);
+    document.getElementById("r10").innerHTML=obtenerListadoDireccionesHost();
+
 
 
 
