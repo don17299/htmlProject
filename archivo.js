@@ -5,31 +5,41 @@ Juan David Jimenez Lopez
 Jorge Ivan Hurtado Imbachi
 */
 
-var ip1, ip2, ip3, ip4, netId, hostId;
-var mask= new Array(32);
-var ip= new Array(32);
-var broadcast= new Array(32);
+var ip1, ip2, ip3, ip4, netId, hostId, dirHost;
+var maskBinario= new Array(32);
+var maskDecimal= new Array();
+var ipBinario= new Array(32);
+var ipDecimal= new Array();
+var broadcastBinario= new Array(32);
+var broadcastDecimal= new Array();
+var redBinario= new Array(32);
+var redDecimal= new Array();
 
-function recibirIp(){
+function recibirDatos(){
     ip1=parseInt(document.getElementById("ip1").value);
     ip2=parseInt(document.getElementById("ip2").value);
     ip3=parseInt(document.getElementById("ip3").value);
     ip4=parseInt(document.getElementById("ip4").value);
     netId=parseInt(document.getElementById("maskCampo").value);
     hostId=32-netId;
-
+    dirHost=2**hostId-2;
+    obtenerIp();
+    obtenerMascara();
+    obtenerBroadCast();
 }
 
 function obtenerMascara(){
 
     for(var i=0;i<netId;i++){
-        mask[i]=1;
+        maskBinario[i]=1;
     }
     for(var i=netId;i<32;i++){
-        mask[i]=0;
+        maskBinario[i]=0;
     }
+    maskDecimal=binarioADecimal(maskBinario);
 
-    console.log(mask);
+    console.log(maskBinario);
+    console.log(maskDecimal);
 }
 
 function obtenerIp(){
@@ -39,10 +49,41 @@ function obtenerIp(){
     array3=decimalABinario(ip3);
     array4=decimalABinario(ip4);
 
-    ip=array1.concat(array2)
-    ip=ip.concat(array3);
-    ip=ip.concat(array4);
-    console.log(ip)
+    ipBinario=array1.concat(array2)
+    ipBinario=ipBinario.concat(array3);
+    ipBinario=ipBinario.concat(array4);
+    
+    ipDecimal.push(ip1)
+    ipDecimal.push(ip2)
+    ipDecimal.push(ip3)
+    ipDecimal.push(ip4)
+    
+    console.log(ipBinario);
+    console.log(ipDecimal);
+
+}
+
+function obtenerBroadCast(){
+    broadcastBinario=[].concat(ipBinario);
+
+    for(var i=netId;i<32;i++){
+      broadcastBinario[i]=1;
+    }
+
+    console.log(broadcastBinario)
+    broadcastDecimal=binarioADecimal(broadcastBinario);
+}
+
+function obtenerRed(){
+
+    for(var i=0;i<32;i++){
+        if(ipBinario[i]&&mask[i]==1){
+            red[i]=1;
+        }else{
+            red[i]=0;
+        }
+
+    }
 }
 
 function decimalABinario(ip){
@@ -65,9 +106,41 @@ function decimalABinario(ip){
     return binario;
 }
 
+function binarioADecimalArrayDArrays(binario){
+    var decimal= new Array();
+    var n1,n2,n3,n4;
+
+    for(var i=0;i<binario.length;i++){
+        for(var j=0;j<binario[i],length;j++){
+            for(var k=7;k>=0;k--){
+               if(j==0){
+                   n1=n1+2**k;
+               }else if(j==1){
+                   n2=n2+2**k;
+                   } else if(j==2){
+                       n3=n3+2**k;
+                   }else if(j==3){
+                       n4=n4+2**k;
+                   }
+               
+            }
+        }
+    }
+
+    decimal.push(n1);
+    decimal.push(n2);
+    decimal.push(n3);
+    decimal.push(n4);
+
+    return decimal;
+
+}
+
+
 function binarioADecimal(binario){
     var n1=0, n2=0, n3=0, n4=0;
-    var num;
+    var decimal= new Array();
+
     binario=binario.reverse();
     for(var i=0;i<binario.length;i++){
         if(i<8){
@@ -90,36 +163,38 @@ function binarioADecimal(binario){
         }
     }
 
-    num=n4+"."+n3+"."+n2+"."+n1;
-    return num;
+    decimal.push(n4);
+    decimal.push(n3);
+    decimal.push(n2);
+    decimal.push(n1);
+    binario=binario.reverse();
+    return decimal;
 }
 
-function mascaraSubred(){
-    
-    document.getElementById("r1").innerHTML=binarioADecimal(mask);
-}
 
-function broadCast(){
-    var broad= new Array(32);
-    broad=[].concat(ip);
 
-    for(var i=netId;i<32;i++){
-      broad[i]=1;
+function decimalAString(decimal){
+    var cadenaDecimal="";
+
+    for(var i=0;i<decimal.length;i++){
+        cadenaDecimal+=decimal[i];
+        if(i!=(decimal.length-1)){
+            cadenaDecimal+=".";
+        }
+
     }
 
-    document.getElementById("r2").innerHTML=binarioADecimal(broad);
+    return cadenaDecimal;
 }
 
 
 function primerPunto(){
-    recibirIp();
-    obtenerMascara();
-    mascaraSubred();
-    obtenerIp();
-    broadCast();
+    recibirDatos();
+    document.getElementById("r1").innerHTML=decimalAString(maskDecimal);
+    document.getElementById("r2").innerHTML=decimalAString(broadcastDecimal);
     document.getElementById("r3").innerHTML=netId;
     document.getElementById("r4").innerHTML=hostId;
-    document.getElementById("r5").innerHTML=2**hostId-2;
+    document.getElementById("r5").innerHTML=dirHost;
 
 
 
