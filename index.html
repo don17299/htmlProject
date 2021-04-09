@@ -40,19 +40,21 @@
 
     <h5>Ingrese la direccion ip en formato simplificado:</h5>
     <form>
-        <input type="number" id="ip1" name="ip">
+        <input type="number" min="0" max="255" id="ip1" name="ip">
         <p class="d-inline">.</p>
-        <input type="number" id="ip2" name="ip">
+        <input type="number" min="0" max="255" id="ip2" name="ip2">
         <p class="d-inline">.</p>
-        <input type="number" id="ip3" name="ip">
+        <input type="number" min="0" max="255" id="ip3" name="ip3">
         <p class="d-inline">.</p>
-        <input type="number" id="ip4" name="ip">
+        <input type="number" min="0" max="255" id="ip4" name="ip4">
         <p class="d-inline">/</p>
-        <input type="number" id="maskCampo" name="mascara">
+        <input type="number" min="15" max="30" id="maskCampo" name="mascara">
         <br><br>
         <button class="btn btn-primary" type="button" onclick="primerPunto()">Ingresar</button>
-        <button class="btn btn-primary d-inline">Generar Ejercicio</button>
+        <button class="btn btn-primary d-inline" type="button" onclick="generarEjercicio()">Generar Ejercicio</button>
+        <h4 id="err" class="text-danger d-inline mx-5"></h4>
     </form>
+    
 
     <hr>
     <h6>Resultados:</h6>
@@ -82,6 +84,7 @@
     </aside>
 
     <footer class="pie">
+        Programa creado por: Carlos Mario Duque Mejía<br>Juan David Jimenez Lopez<br>Jorge Ivan Hurtado Imbachi<br><br>Ingenieria de sistemas y computacion<br>Universidad del Quindio <br>2021
     </footer>
 
     <script src="archivo.js"></script>
