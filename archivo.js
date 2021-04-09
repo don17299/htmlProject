@@ -17,11 +17,11 @@ var redDecimal= new Array();
 var rango= new Array();
 
 function recibirDatos(){
-    ip1=parseInt(document.getElementById("ip1").value);
-    ip2=parseInt(document.getElementById("ip2").value);
-    ip3=parseInt(document.getElementById("ip3").value);
-    ip4=parseInt(document.getElementById("ip4").value);
-    netId=parseInt(document.getElementById("maskCampo").value);
+    ip1=document.getElementById("ip1").value;
+    ip2=document.getElementById("ip2").value;
+    ip3=document.getElementById("ip3").value;
+    ip4=document.getElementById("ip4").value;
+    netId=document.getElementById("maskCampo").value;
     hostId=32-netId;
     dirHost=2**hostId-2;
     obtenerIp();
@@ -205,20 +205,30 @@ function obtenerRangoDirecciones(){
 }
 
 function obtenerListadoDireccionesHost(){
+    var laVariable = 255;
+    var elResiduo = 0;
     var rangoCopy=[].concat(rango);
-    var direcciones=decimalAString(rangoCopy[0])+"//";
+    var direcciones="";//decimalAString(rangoCopy[0])+"//";
     console.log(direcciones);
     for(var i=0;i<dirHost;i++){
+        
+        elResiduo =((i+1)%(laVariable+1));
+        //console.log(decimalAString(rangoCopy[0]),rangoCopy[0][3],"aca van las direcciones", elResiduo);
+        if (rangoCopy[0][3]==laVariable){
+            rangoCopy[0][2]=rangoCopy[0][2]+1;
+        }
+        rangoCopy[0][3]=elResiduo;//residuo = dividendo - cociente*divisor
+        direcciones+=decimalAString(rangoCopy[0])+" || \n";
+        //console.log(direcciones);
 
-        rango[0][3]=rangoCopy[0][3]+1;
-        direcciones+=decimalAString(rangoCopy[0])+"// \n";
-        console.log(direcciones);
     }
     direcciones+=decimalAString(rangoCopy[1]);
-    console.log(direcciones);
+    //console.log(direcciones);
     
     return direcciones;
 }
+
+    // var cont = i%255 (0-254)
 
 
 function primerPunto(){
