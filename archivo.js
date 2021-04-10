@@ -5,19 +5,35 @@ Juan David Jimenez Lopez
 Jorge Ivan Hurtado Imbachi
 */
 
+//cada octeto de la ip ingresada, netid, hostid y dirrecciones para los host.
 var ip1, ip2, ip3, ip4, netId, hostId, dirHost;
+//mascara de subred binaria.
 var maskBinario= new Array(32);
+//mascara de subred decimal.
 var maskDecimal= new Array();
+//ip binario.
 var ipBinario= new Array(32);
+//ip decimal.
 var ipDecimal= new Array();
+//broadcast binario.
 var broadcastBinario= new Array(32);
+//broadcast decimal.
 var broadcastDecimal= new Array();
+//red binario.
 var redBinario= new Array(32);
+//red decimal.
 var redDecimal= new Array();
+//arreglo que almacena la primera direccion host y la ultima.
 var rango= new Array(2);
+//determina si la ejecucion es valida o no (errores).
 var validez=true;
+//especifica el mensaje de error que se debe mostrar.
 var mensajeErr;
 
+/*
+*Se encarga de llamar a los metodos
+*que obtendran sus valores a partir de los datos capturados en el metodo leerDatos().
+*/
 function recibirDatos(){
     if(isNaN(ip1) || isNaN(ip2) || isNaN(ip3) || isNaN(ip4) || isNaN(netId)){
         
@@ -36,9 +52,11 @@ function recibirDatos(){
         obtenerRed();
         }
     }
-    
 }
 
+/*
+*Se encarga de capturar los datos ingresados en los campos de texto.
+*/
 function leerDatos(){
     ip1=parseInt(document.getElementById("ip1").value);
     ip2=parseInt(document.getElementById("ip2").value);
@@ -47,6 +65,9 @@ function leerDatos(){
     netId=parseInt(document.getElementById("maskCampo").value);
 }
 
+/*
+*Obtiene la mascara de subred en binario y decimal a partir del valor netId.
+*/
 function obtenerMascara(){
 
     for(var i=0;i<netId;i++){
@@ -56,11 +77,11 @@ function obtenerMascara(){
         maskBinario[i]=0;
     }
     maskDecimal=binarioADecimal(maskBinario);
-
-    //console.log(maskBinario);
-    //console.log(maskDecimal);
 }
 
+/*
+*Obtiene la ip en binario y decimal a partir de los datos ip1,ip2,ip3,ip4.
+*/
 function obtenerIp(){
     var array1=new Array(8), array2=new Array(8), array3=new Array(8), array4=new Array(8);
     array1=decimalABinario(ip1);
@@ -76,12 +97,11 @@ function obtenerIp(){
     ipDecimal.push(ip2)
     ipDecimal.push(ip3)
     ipDecimal.push(ip4)
-    
-    console.log(ipBinario);
-    console.log(ipDecimal);
-
 }
 
+/*
+*Obtiene la direccion de broadcast binaria y decimal a partir de la ip binaria.
+*/
 function obtenerBroadCast(){
     broadcastBinario=[].concat(ipBinario);
 
@@ -93,6 +113,9 @@ function obtenerBroadCast(){
     broadcastDecimal=binarioADecimal(broadcastBinario);
 }
 
+/*
+*Obtiene la direccion de red con la red binaria y la mascara binaria.
+*/
 function obtenerRed(){
 
     for(var i=0;i<32;i++){
@@ -106,6 +129,11 @@ function obtenerRed(){
     redDecimal=binarioADecimal(redBinario);
 }
 
+/*
+*@param ip array de la ip en decimal.
+*A partir una direccion decimal obtiene su direccion binaria.
+*@return retorna un array con la direccion en binario.
+*/
 function decimalABinario(ip){
     var binario= new Array();
         while(ip>1){
@@ -119,13 +147,14 @@ function decimalABinario(ip){
             binario.unshift(0);
         }
     }
-
-    //binario=binario.reverse();
-
-    //console.log(binario);
     return binario;
 }
 
+/*
+*@param binario array de una direccion ip en binario en el cual hay 4 posiciones correspondientes a los cuatro octetos.
+*A partir de la ip en binario obtiene la ip en decimal
+*@return retorna un array con la direccion en decimal
+*/
 function binarioADecimalArrayDArrays(binario){
     var decimal= new Array();
     var n1,n2,n3,n4;
@@ -153,10 +182,13 @@ function binarioADecimalArrayDArrays(binario){
     decimal.push(n4);
 
     return decimal;
-
 }
 
-
+/*
+*@param binario array de una direccion ip en binario.
+*A partir de la ip en binario obtiene la ip en decimal
+*@return retorna un array con la direccion en decimal
+*/
 function binarioADecimal(binario){
     var n1=0, n2=0, n3=0, n4=0;
     var decimal= new Array();
@@ -191,8 +223,11 @@ function binarioADecimal(binario){
     return decimal;
 }
 
-
-
+/*
+*@param array de una direccion ip en decimal.
+*Genera una cadena de la direccion ip deseada.
+*@return cadena de la ip.
+*/
 function decimalAString(decimal){
     var cadenaDecimal="";
 
@@ -207,6 +242,9 @@ function decimalAString(decimal){
     return cadenaDecimal;
 }
 
+/*
+*Obtiene el rango de direcciones(host1 y host final) y los almacena en el array rango.
+*/
 function obtenerRangoDirecciones(){
     var host1= new Array(), host2= new Array(), hostd1, hostd2;
 
@@ -226,6 +264,10 @@ function obtenerRangoDirecciones(){
     rango[1]=hostd2;
 }
 
+/*
+*Obtiene cada direccion de host que puesde obtenerse.
+@return retorna la cadena que contiene todas las direcciones de host.
+*/
 function obtenerListadoDireccionesHost(){
    var direcciones="";
     for(var i=0;i<dirHost;i++){
@@ -250,14 +292,14 @@ function obtenerListadoDireccionesHost(){
             }
             
         }
-        console.log(i);
     }
-    //direcciones+=decimalAString(host2);
-    //console.log(direcciones);
     
     return direcciones;
 }
 
+/*
+*Limpia todos los campos de respuesta
+*/
 function limpiarFormulario(){
     document.getElementById("r1").innerHTML="";
     document.getElementById("r2").innerHTML="";
@@ -272,6 +314,9 @@ function limpiarFormulario(){
 
 }
 
+/*
+*ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
+*/
 function generarEjercicio(){
     ip1=Math.floor( Math.random() * 255);
     ip2=Math.floor( Math.random() * 255);
@@ -305,6 +350,9 @@ function generarEjercicio(){
 
 }
 
+/*
+* ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
+*/
 function primerPunto(){
     leerDatos();
     recibirDatos();
@@ -326,5 +374,4 @@ function primerPunto(){
         limpiarFormulario();
         validez=true;
     }
-
 }
