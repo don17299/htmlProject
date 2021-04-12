@@ -59,7 +59,9 @@ function recibirDatos(){
 }
 
 
-
+/*
+*Este metodo valida la netid para el ip ingresado
+*/
 function validarNet(){
     // 11111111.11111111.11111111.11100000 ip red
     // 11111111.11111111.11111111.00000000 mascara sub red
