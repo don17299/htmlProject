@@ -1,3 +1,11 @@
+body {
+    background: url(images/drew-beamer-kUHfMW8awpE-unsplash.jpg)  ; 
+    background-size: cover;
+    background-repeat: repeat;
+    margin: 0;
+    height: 100vh;
+  }
+
 .div1{
     text-align: center;
 }
