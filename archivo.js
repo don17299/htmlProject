@@ -50,7 +50,7 @@ function recibirDatos(){
         else {
         hostId=32-netId;
         dirHost=2**hostId-2;
-        obtenerIp();
+        //obtenerIp();
         obtenerMascara();
         obtenerBroadCast();
         obtenerRed();
@@ -65,7 +65,9 @@ function recibirDatos(){
 function validarNet(){
     // 11111111.11111111.11111111.11100000 ip red
     // 11111111.11111111.11111111.00000000 mascara sub red
+    if(ipBinario.length==0){
     obtenerIp();
+    }
     var posicion = ipBinario.lastIndexOf(1);
     
     if(netId-1 < posicion){
@@ -338,12 +340,17 @@ function limpiarFormulario(){
 /*
 *ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
 */
-function generarEjercicio(){
+function generarEjercicio1(){
+    var val=false;
+
     ip1=Math.floor( Math.random() * 255);
     ip2=Math.floor( Math.random() * 255);
     ip3=Math.floor( Math.random() * 255);
     ip4=Math.floor( Math.random() * 255);
+    while(!val){
     netId=Math.floor( Math.random() * (30 - 15) + 15);
+    val=validarNet();
+    }
     document.getElementById("ip1").value=ip1;
     document.getElementById("ip2").value=ip2;
     document.getElementById("ip3").value=ip3;
