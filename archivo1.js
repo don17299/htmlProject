@@ -80,7 +80,7 @@ function validarNet(){
 /*
 *Se encarga de capturar los datos ingresados en los campos de texto.
 */
-function leerDatos(){
+function leerDatos1(){
     ip1=parseInt(document.getElementById("ip1").value);
     ip2=parseInt(document.getElementById("ip2").value);
     ip3=parseInt(document.getElementById("ip3").value);
@@ -382,7 +382,7 @@ function generarEjercicio1(){
 * ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
 */
 function primerPunto(){
-    leerDatos();
+    leerDatos1();
     recibirDatos();
     if(validez){
     document.getElementById("err").innerHTML="";
@@ -403,3 +403,4 @@ function primerPunto(){
         validez=true;
     }
 }
+
