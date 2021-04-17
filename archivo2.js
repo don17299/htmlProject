@@ -43,38 +43,15 @@ function recibirDatos(){
         if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30){
             validez=false;
         mensajeErr="Valores fuera de Rango";
-        }else if(!validarNet()){
-            validez =false;
-            mensajeErr="Esta mascara de red no es apropiada para esta dirección de IPv4";
         }
         else {
         hostId=32-netId;
         dirHost=2**hostId-2;
-        
+        obtenerIp();
         obtenerMascara();
         obtenerBroadCast();
         obtenerRed();
         }
-    }
-}
-
-
-/*
-*Este metodo valida la netid para el ip ingresado
-*/
-function validarNet(){
-    // 11111111.11111111.11111111.11100000 ip red
-    // 11111111.11111111.11111111.00000000 mascara sub red
-    //if(ipBinario.length==0){
-    obtenerIp();
-    console.log("estuve aqui");
-    //}
-    var posicion = ipBinario.lastIndexOf(1);
-    
-    if(netId-1 < posicion){
-        return false;
-    } else {
-        return true;
     }
 }
 
@@ -349,38 +326,37 @@ function generarEjercicio2(){
     ip2=Math.floor( Math.random() * 255);
     ip3=Math.floor( Math.random() * 255);
     ip4=Math.floor( Math.random() * 255);
-    while(!val){
     netId=Math.floor( Math.random() * (30 - 15) + 15);
-    val=validarNet();
-    }
     document.getElementById("octanteHostId1").value=ip1;
     document.getElementById("octanteHostId2").value=ip2;
     document.getElementById("octanteHostId3").value=ip3;
     document.getElementById("octanteHostId4").value=ip4;
     document.getElementById("mascaraSubRedId").value=netId;
     recibirDatos();
-    if(validez){
-        document.getElementById("err").innerHTML="";
-    document.getElementById("resultado1").innerHTML=decimalAString(redDecimal);
-    document.getElementById("resultado2").innerHTML=decimalAString(broadcastDecimal);
-    document.getElementById("resultado3").innerHTML=dirHost;
-    obtenerRangoDirecciones();
-    document.getElementById("resultado4").innerHTML=decimalAString(redDecimal);
-    document.getElementById("resultado5").innerHTML=decimalAString(rango[0]);
-    document.getElementById("resultado6").innerHTML=decimalAString(rango[1]);
-    document.getElementById("resultado7").innerHTML=decimalAString(broadcastDecimal);
-    document.getElementById("resultado8").innerHTML=obtenerListadoDireccionesHost();
-    }else{
-        document.getElementById("err").innerHTML= mensajeErr;
-        limpiarFormulario();
-        validez=true;
-    }
+    llenarTodosLosCampos();
 
 }
 
-function llenarTodosLosCampos()
-{
-    
+/**
+ * Llena todos los campos de respuesta
+ */
+function llenarTodosLosCampos(){
+    if(validez){
+        document.getElementById("err").innerHTML="";
+        document.getElementById("resultado1").innerHTML=decimalAString(redDecimal);
+        document.getElementById("resultado2").innerHTML=decimalAString(broadcastDecimal);
+        document.getElementById("resultado3").innerHTML=dirHost;
+        obtenerRangoDirecciones();
+        document.getElementById("resultado4").innerHTML=decimalAString(redDecimal);
+        document.getElementById("resultado5").innerHTML=decimalAString(rango[0]);
+        document.getElementById("resultado6").innerHTML=decimalAString(rango[1]);
+        document.getElementById("resultado7").innerHTML=decimalAString(broadcastDecimal);
+        document.getElementById("resultado8").innerHTML=obtenerListadoDireccionesHost();
+        }else{
+            document.getElementById("err").innerHTML= mensajeErr;
+            limpiarFormulario();
+            validez=true;
+        }
 }
 
 /*
@@ -389,20 +365,5 @@ function llenarTodosLosCampos()
 function ejecutarSegundoPunto(){
     leerDatos();
     recibirDatos();
-    if(validez){
-    document.getElementById("err").innerHTML="";
-    document.getElementById("resultado1").innerHTML=decimalAString(redDecimal);
-    document.getElementById("resultado2").innerHTML=decimalAString(broadcastDecimal);
-    document.getElementById("resultado3").innerHTML=dirHost;
-    obtenerRangoDirecciones();
-    document.getElementById("resultado4").innerHTML=decimalAString(redDecimal);
-    document.getElementById("resultado5").innerHTML=decimalAString(rango[0]);
-    document.getElementById("resultado6").innerHTML=decimalAString(rango[1]);
-    document.getElementById("resultado7").innerHTML=decimalAString(broadcastDecimal);
-    document.getElementById("resultado8").innerHTML=obtenerListadoDireccionesHost();
-    }else{
-        document.getElementById("err").innerHTML= mensajeErr;
-        limpiarFormulario();
-        validez=true;
-    }
+    llenarTodosLosCampos();
 }

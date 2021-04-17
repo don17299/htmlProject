@@ -12,7 +12,7 @@ var maskBinario= new Array(32);
 //mascara de subred decimal.
 var maskDecimal= new Array();
 //ip binario.
-var ipBinario= new Array();
+var ipBinario= new Array(32);
 //ip decimal.
 var ipDecimal= new Array();
 //broadcast binario.
@@ -43,14 +43,14 @@ function recibirDatos(){
         if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30){
             validez=false;
         mensajeErr="Valores fuera de Rango";
-        }else if(!validarNet()){
-            validez =false;
-            mensajeErr="Esta mascara de red no es apropiada para esta dirección de IPv4";
-        }
+        }//else if(!validarNet()){
+           // validez =false;
+            //mensajeErr="Esta mascara de red no es apropiada para esta dirección de IPv4";
+        //}
         else {
         hostId=32-netId;
         dirHost=2**hostId-2;
-        //obtenerIp();
+        obtenerIp();
         obtenerMascara();
         obtenerBroadCast();
         obtenerRed();
@@ -63,11 +63,7 @@ function recibirDatos(){
 *Este metodo valida la netid para el ip ingresado
 */
 function validarNet(){
-    // 11111111.11111111.11111111.11100000 ip red
-    // 11111111.11111111.11111111.00000000 mascara sub red
-    if(ipBinario.length==0){
     obtenerIp();
-    }
     var posicion = ipBinario.lastIndexOf(1);
     
     if(netId-1 < posicion){
@@ -77,10 +73,18 @@ function validarNet(){
     }
 }
 
+function validarNetRandom(){
+    obtenerIp();
+    var posicion = ipBinario.lastIndexOf(1);
+    console.log(posicion);
+    
+    return posicion+1;
+}
+
 /*
 *Se encarga de capturar los datos ingresados en los campos de texto.
 */
-function leerDatos1(){
+function leerDatos(){
     ip1=parseInt(document.getElementById("ip1").value);
     ip2=parseInt(document.getElementById("ip2").value);
     ip3=parseInt(document.getElementById("ip3").value);
@@ -341,49 +345,29 @@ function limpiarFormulario(){
 *ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
 */
 function generarEjercicio1(){
-    var val=false;
+    var numero=0;
 
     ip1=Math.floor( Math.random() * 255);
     ip2=Math.floor( Math.random() * 255);
     ip3=Math.floor( Math.random() * 255);
     ip4=Math.floor( Math.random() * 255);
-    while(!val){
     netId=Math.floor( Math.random() * (30 - 15) + 15);
-    val=validarNet();
-    }
+    //numero=validarNetRandom();
+    //netId=Math.floor( Math.random() * (30 - numero) + numero);
     document.getElementById("ip1").value=ip1;
     document.getElementById("ip2").value=ip2;
     document.getElementById("ip3").value=ip3;
     document.getElementById("ip4").value=ip4;
     document.getElementById("maskCampo").value=netId;
     recibirDatos();
-    if(validez){
-        document.getElementById("err").innerHTML="";
-        document.getElementById("r1").innerHTML=decimalAString(maskDecimal);
-        document.getElementById("r2").innerHTML=decimalAString(broadcastDecimal);
-        document.getElementById("r3").innerHTML=netId;
-        document.getElementById("r4").innerHTML=hostId;
-        document.getElementById("r5").innerHTML=dirHost;
-        obtenerRangoDirecciones();
-        document.getElementById("r6").innerHTML=decimalAString(redDecimal);
-        document.getElementById("r7").innerHTML=decimalAString(rango[0]);
-        document.getElementById("r8").innerHTML=decimalAString(rango[1]);
-        document.getElementById("r9").innerHTML=decimalAString(broadcastDecimal);
-        document.getElementById("r10").innerHTML=obtenerListadoDireccionesHost();
-        }else{
-            document.getElementById("err").innerHTML= mensajeErr;
-            limpiarFormulario();
-            validez=true;
-        }
+    llenarDatos();
 
 }
 
-/*
-* ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
-*/
-function primerPunto(){
-    leerDatos1();
-    recibirDatos();
+/**
+ * llena todos los campos de respuesta
+ */
+function llenarDatos(){
     if(validez){
     document.getElementById("err").innerHTML="";
     document.getElementById("r1").innerHTML=decimalAString(maskDecimal);
@@ -402,5 +386,15 @@ function primerPunto(){
         limpiarFormulario();
         validez=true;
     }
+
+}
+
+/*
+* ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
+*/
+function primerPunto(){
+    leerDatos();
+    recibirDatos();
+    llenarDatos();
 }
 
