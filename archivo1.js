@@ -12,7 +12,7 @@ var maskBinario= new Array(32);
 //mascara de subred decimal.
 var maskDecimal= new Array();
 //ip binario.
-var ipBinario= new Array(32);
+var ipBinario= new Array();
 //ip decimal.
 var ipDecimal= new Array();
 //broadcast binario.
