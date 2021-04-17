@@ -43,14 +43,13 @@ function recibirDatos(){
         if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30){
             validez=false;
         mensajeErr="Valores fuera de Rango";
-        }//else if(!validarNet()){
-           // validez =false;
-            //mensajeErr="Esta mascara de red no es apropiada para esta dirección de IPv4";
-        //}
+        }else if(!validarNet() || !validarIp()){
+            validez =false;
+            mensajeErr="Mascara de red o Direccion Ip Erroneas";
+        }
         else {
         hostId=32-netId;
         dirHost=2**hostId-2;
-        obtenerIp();
         obtenerMascara();
         obtenerBroadCast();
         obtenerRed();
@@ -63,7 +62,6 @@ function recibirDatos(){
 *Este metodo valida la netid para el ip ingresado
 */
 function validarNet(){
-    obtenerIp();
     var posicion = ipBinario.lastIndexOf(1);
     
     if(netId-1 < posicion){
@@ -74,13 +72,21 @@ function validarNet(){
 }
 
 function validarNetRandom(){
-    obtenerIp();
     var posicion = ipBinario.lastIndexOf(1);
     console.log(posicion);
     
     return posicion+1;
 }
 
+
+function validarIp(){
+    obtenerIp();
+    if(ipBinario[30]==1 || ipBinario[31]==1){
+        return false;
+    }else{
+        return true;
+    }
+}
 /*
 *Se encarga de capturar los datos ingresados en los campos de texto.
 */
@@ -345,15 +351,25 @@ function limpiarFormulario(){
 *ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
 */
 function generarEjercicio1(){
+    var isMascara=false;
+    var isIp=false;
     var numero=0;
 
+    
     ip1=Math.floor( Math.random() * 255);
     ip2=Math.floor( Math.random() * 255);
     ip3=Math.floor( Math.random() * 255);
+    while(!isIp){
     ip4=Math.floor( Math.random() * 255);
+    isIp=validarIp();
+    }
+
     netId=Math.floor( Math.random() * (30 - 15) + 15);
-    //numero=validarNetRandom();
-    //netId=Math.floor( Math.random() * (30 - numero) + numero);
+    numero=validarNetRandom();
+    while(!isMascara){
+    netId=Math.floor( Math.random() * (30 - numero) + numero);
+    isMascara=validarNet();
+    }
     document.getElementById("ip1").value=ip1;
     document.getElementById("ip2").value=ip2;
     document.getElementById("ip3").value=ip3;
