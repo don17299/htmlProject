@@ -44,34 +44,31 @@
         <p class="d-inline">.</p>
         <input type="number" min="0" max="255" id="octanteHostId4" >
         <p class="d-inline">/</p>
-        <input type="number" min="15" max="30" id="mascaraSubRedHostId" name="nombreMascaraSubRedHostId">
+        <input type="number" min="15" max="30" id="mascaraSubRedId" name="nombreMascaraSubRedHostId">
         <br><br>
-        <button class="btn btn-primary" type="button" onclick="primerPunto()">Ingresar</button>
+        <button class="btn btn-primary" type="button" onclick="ejecutarSegundoPunto()">Ingresar</button>
         <button class="btn btn-primary d-inline" type="button" onclick="generarEjercicio2()">Generar Ejercicio</button>
         <h4 id="err" class="text-danger d-inline mx-5"></h4>
     </form>
 
     <hr>
     <h6>Resultados:</h6>
-    <h5>Mascara de subred(en decimal): </h5> <p id="resultado1"></p>
+    <h5>Direccion de la red: </h5> <p id="resultado1"></p>
     <br>
     <h5>Direccion de Broadcast de la red: </h5> <p id="resultado2"></p>
     <br>
-    <h5># de bits para identificar la red: </h5> <p id="resultado3"></p>
+    <h5>#Cantidad de host en la red: </h5> <p id="resultado3"></p>
     <br>
-    <h5># de bits para identidicar los hosts: </h5> <p id="resultado4"></p>
-    <br>
-    <h5># de direcciones que se pueden asignar a los hosts: </h5> <p id="resultado5"></p>
     <h5>Rango de direcciones:</h5><br>
     <h6>Red:</h6>
-    <p id="resultado6" class="text-danger"></p>
-    <p id="resultado7" class="text-primary"></p>
+    <p id="resultado4" class="text-danger"></p>
+    <p id="resultado5" class="text-primary"></p>
     <p>.<br>.<br>.</p>
-    <p id="resultado8" class="text-primary"></p>
+    <p id="resultado6" class="text-primary"></p>
     <h6>Broadcast:</h6>
-    <p id="resultado9" class="text-danger"></p><br>
+    <p id="resultado7" class="text-danger"></p><br>
     <h5>Listado de direcciones de host:</h5><br>
-    <p id="resultado10"></p>
+    <p id="resultado8"></p>
     </div>
     </section>
 
