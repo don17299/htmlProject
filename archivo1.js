@@ -408,7 +408,7 @@ function llenarDatos(){
 /*
 * ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
 */
-function primerPunto(){
+function ejecutarPrimerPunto(){
     leerDatos();
     recibirDatos();
     llenarDatos();
