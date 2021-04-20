@@ -74,8 +74,6 @@ function validarNet(){
 
 function validarNetRandom(){
     var posicion = ipBinario.lastIndexOf(1);
-    console.log(posicion);
-    
     return posicion+1;
 }
 
@@ -144,7 +142,6 @@ function obtenerBroadCast(){
       broadcastBinario[i]=1;
     }
 
-    //console.log(broadcastBinario)
     broadcastDecimal=binarioADecimal(broadcastBinario);
 }
 
@@ -164,22 +161,47 @@ function obtenerRed(){
     redDecimal=binarioADecimal(redBinario);
 }
 
-function obtenerSubred(subred){
-    var subred= new Array();
-    //var subred=decimalABinario(subred);
-    for(var i=0;i<32;i++){
-        if(ipBinario[i]&&maskBinario[i]==1){
-            redBinario[i]=1;
-        }else{
-            redBinario[i]=0;
-        }
+/**
+ * Obtiene la direccion ip de la subred especificada
+ * @param {} subredDecimal es la subred en formato decimal 
+ * @returns retorna la direccion ip de la subred en binario
+ */
+function obtenerSubred(subredDecimal){
+    var arreglo=decimalABinario(subredDecimal);
+    var subred= [].concat(redBinario);
 
+    if(arreglo.length<bitsSubred){
+        while(arreglo.length<bitsSubred){
+        arreglo.unshift(0);
+        }
+    }else{
+        if(arreglo.length>bitsSubred){
+            while(arreglo.length>bitsSubred){
+            arreglo.shift();
+            }
+        }
     }
-    redDecimal=binarioADecimal(redBinario);
+    for(var j=0;j<arreglo.length;j++){
+        subred[(j+netId)]=arreglo[j];
+    }
+
+    return subred;
 }
 
-function obtenerBroadCastSubred(subred){
+/**
+ * Obtiene el broadcast de la subred
+ * @param {} subredBinario ip de la subred en binario (array)
+ * @returns 
+ */
+function obtenerBroadcastSubred(subredBinario){
+    var broadcastS=[].concat(subredBinario);
+    var total=netId+bitsSubred;
 
+    for(var k=total;k<32;k++){
+        broadcastS[k]=1;
+    }
+
+    return broadcastS;
 }
 
 /*
@@ -295,6 +317,9 @@ function decimalAString(decimal){
     return cadenaDecimal;
 }
 
+/**
+ * obtiene el rango de direcciones de los host en la red principal
+ */
 function obtenerRangoDirecciones(){
     var hostInicial= new Array(), hostPenultimo= new Array(), hostInicialD, hostPenultimoD;
 
@@ -308,17 +333,26 @@ function obtenerRangoDirecciones(){
     rango[1]=hostPenultimoD;
 }
 
-function obtenerRangoDireccionesSubRed(subred){
+/**
+ * Obtiene el rango de direcciones de host de la subred especificada
+ * @param {*} subred ip de la subred en binario(array)
+ * @param {*} broadcast ip del broadcast de la subred en binario(array)
+ * @returns 
+ */
+function obtenerRangoDireccionesSubRed(subred, broadcast){
     var hostInicial= new Array(), hostPenultimo= new Array(), hostInicialD, hostPenultimoD;
+    var rangoSubred= new Array(2);
 
-    hostInicial=[].concat(redBinario);
-    hostPenultimo=[].concat(broadcastBinario);
+    hostInicial=[].concat(subred);
+    hostPenultimo=[].concat(broadcast);
     hostInicial[31]=1;
     hostPenultimo[31]=0;
     hostInicialD=binarioADecimal(hostInicial);
     hostPenultimoD=binarioADecimal(hostPenultimo);
-    rango[0]=hostInicialD;
-    rango[1]=hostPenultimoD;
+    rangoSubred[0]=hostInicialD;
+    rangoSubred[1]=hostPenultimoD;
+
+    return rangoSubred;
 }
 
 
@@ -416,14 +450,6 @@ function llenarDatos(){
     document.getElementById("resultado2").innerHTML=decimalAString(broadcastDecimal);
     document.getElementById("resultado3").innerHTML=dirSubred-2;
     document.getElementById("resultado4").innerHTML=dirHost;
-
-    /*obtenerRangoDirecciones();
-    document.getElementById("r6").innerHTML=decimalAString(redDecimal);
-    document.getElementById("r7").innerHTML=decimalAString(rango[0]);
-    document.getElementById("r8").innerHTML=decimalAString(rango[1]);
-    document.getElementById("r9").innerHTML=decimalAString(broadcastDecimal);
-    document.getElementById("r10").innerHTML=obtenerListadoDireccionesHost();
-    */
     }else{
         document.getElementById("err").innerHTML= mensajeErr;
         limpiarFormulario();
@@ -452,6 +478,52 @@ function crearTablaTotal(filas){
     var filaTitulo =document.createElement("tr");
 
     for (var i=0; i< filas;i++){
+        var subred=obtenerSubred((i));
+        var broadcastS=obtenerBroadcastSubred(subred);
+        var rangoS=obtenerRangoDireccionesSubRed(subred,broadcastS);
+        
+        var fila =document.createElement("tr");
+
+            var celda1 = document.createElement("td");
+            var textoCelda = document.createTextNode((i+1));
+            celda1.appendChild(textoCelda);
+            celda1.setAttribute("border","1");
+            fila.appendChild(celda1);
+
+            var celda2 = document.createElement("td");
+            var textoCelda = document.createTextNode(decimalAString(binarioADecimal(subred)));
+            celda2.appendChild(textoCelda);
+            celda2.setAttribute("border","1");
+            fila.appendChild(celda2);
+
+            var celda3 = document.createElement("td");
+            var textoCelda = document.createTextNode(decimalAString(rangoS[0])+" / "+decimalAString(rangoS[1]));
+            celda3.appendChild(textoCelda);
+            celda3.setAttribute("border","1");
+            fila.appendChild(celda3);
+
+            var celda4 = document.createElement("td");
+            var textoCelda = document.createTextNode(decimalAString(binarioADecimal(broadcastS)));
+            celda4.appendChild(textoCelda);
+            celda4.setAttribute("border","1");
+            fila.appendChild(celda4);
+        
+        tblBody.appendChild(fila);
+    }
+    tabla.appendChild(tblBody); 
+
+    tabla.setAttribute("border", "2");
+}
+
+function crearTabla(filas){
+
+    var  tabla = document.getElementById("tabla");
+    tabla.innerHTML="<tr><td>Numero subred</td><td>ip subred</td><td>rango de host</td><td>broadcast de la sudred</td></tr>";
+    var tblBody = document.createElement("tbody");
+    
+    var filaTitulo =document.createElement("tr");
+
+    for (var i=0; i< filas;i++){
 
         var fila =document.createElement("tr");
 
@@ -464,7 +536,6 @@ function crearTablaTotal(filas){
         }
         tblBody.appendChild(fila);
     } 
-    tabla
     tabla.appendChild(tblBody); 
 
     tabla.setAttribute("border", "2");
