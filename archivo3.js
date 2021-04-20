@@ -5,8 +5,8 @@ Juan David Jimenez Lopez
 Jorge Ivan Hurtado Imbachi
 */
 
-//cada octeto de la ip ingresada, netid, hostid y dirrecciones para los host.
-var ip1, ip2, ip3, ip4, netId, hostId, dirHost;
+//cada octeto de la ip ingresada, netid, hostid, dirrecciones para los host, bits para subred y direcciones de subred.
+var ip1, ip2, ip3, ip4, netId, hostId, dirHost, bitsSubred, dirSubred;
 //mascara de subred binaria.
 var maskBinario= new Array(32);
 //mascara de subred decimal.
@@ -35,12 +35,12 @@ var mensajeErr;
 *que obtendran sus valores a partir de los datos capturados en el metodo leerDatos().
 */
 function recibirDatos(){
-    if(isNaN(ip1) || isNaN(ip2) || isNaN(ip3) || isNaN(ip4) || isNaN(netId)){
+    if(isNaN(ip1) || isNaN(ip2) || isNaN(ip3) || isNaN(ip4) || isNaN(netId) || isNaN(bitsSubred)){
         
         validez=false;
         mensajeErr="Campos Vacios";
     }else{
-        if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30){
+        if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30||bitsSubred>hostId||bitsSubred<2){
             validez=false;
         mensajeErr="Valores fuera de Rango";
         }else if(!validarNet() || !validarIp()){
@@ -49,7 +49,8 @@ function recibirDatos(){
         }
         else {
         hostId=32-netId;
-        dirHost=2**hostId-2;
+        dirHost=2**(hostId-bitsSubred)-2;
+        dirSubred=2**bitsSubred;
         obtenerMascara();
         obtenerBroadCast();
         obtenerRed();
@@ -91,11 +92,12 @@ function validarIp(){
 *Se encarga de capturar los datos ingresados en los campos de texto.
 */
 function leerDatos(){
-    ip1=parseInt(document.getElementById("ip1").value);
-    ip2=parseInt(document.getElementById("ip2").value);
-    ip3=parseInt(document.getElementById("ip3").value);
-    ip4=parseInt(document.getElementById("ip4").value);
-    netId=parseInt(document.getElementById("maskCampo").value);
+    ip1=parseInt(document.getElementById("octanteHostId1").value);
+    ip2=parseInt(document.getElementById("octanteHostId2").value);
+    ip3=parseInt(document.getElementById("octanteHostId3").value);
+    ip4=parseInt(document.getElementById("octanteHostId4").value);
+    netId=parseInt(document.getElementById("mascaraSubRedId").value);
+    bitsSubred=parseInt(document.getElementById("campoBitsSubNet").value);
 }
 
 /*
@@ -160,6 +162,24 @@ function obtenerRed(){
 
     }
     redDecimal=binarioADecimal(redBinario);
+}
+
+function obtenerSubred(subred){
+    var subred= new Array();
+    //var subred=decimalABinario(subred);
+    for(var i=0;i<32;i++){
+        if(ipBinario[i]&&maskBinario[i]==1){
+            redBinario[i]=1;
+        }else{
+            redBinario[i]=0;
+        }
+
+    }
+    redDecimal=binarioADecimal(redBinario);
+}
+
+function obtenerBroadCastSubred(subred){
+
 }
 
 /*
@@ -275,27 +295,32 @@ function decimalAString(decimal){
     return cadenaDecimal;
 }
 
-/*
-*Obtiene el rango de direcciones(host1 y host final) y los almacena en el array rango.
-*/
 function obtenerRangoDirecciones(){
-    var host1= new Array(), host2= new Array(), hostd1, hostd2;
+    var hostInicial= new Array(), hostPenultimo= new Array(), hostInicialD, hostPenultimoD;
 
-    host1=[].concat(redBinario);
-    host2=[].concat(broadcastBinario);
-    console.log(host1);
-    console.log(host2);
-    host1[31]=1;
-    host2[31]=0;
-    console.log(host1);
-    console.log(host2);
-    hostd1=binarioADecimal(host1);
-    hostd2=binarioADecimal(host2);
-    console.log(hostd1);
-    console.log(hostd2);
-    rango[0]=hostd1;
-    rango[1]=hostd2;
+    hostInicial=[].concat(redBinario);
+    hostPenultimo=[].concat(broadcastBinario);
+    hostInicial[31]=1;
+    hostPenultimo[31]=0;
+    hostInicialD=binarioADecimal(hostInicial);
+    hostPenultimoD=binarioADecimal(hostPenultimo);
+    rango[0]=hostInicialD;
+    rango[1]=hostPenultimoD;
 }
+
+function obtenerRangoDireccionesSubRed(subred){
+    var hostInicial= new Array(), hostPenultimo= new Array(), hostInicialD, hostPenultimoD;
+
+    hostInicial=[].concat(redBinario);
+    hostPenultimo=[].concat(broadcastBinario);
+    hostInicial[31]=1;
+    hostPenultimo[31]=0;
+    hostInicialD=binarioADecimal(hostInicial);
+    hostPenultimoD=binarioADecimal(hostPenultimo);
+    rango[0]=hostInicialD;
+    rango[1]=hostPenultimoD;
+}
+
 
 /*
 *Obtiene cada direccion de host que puesde obtenerse.
@@ -334,16 +359,17 @@ function obtenerListadoDireccionesHost(){
 *Limpia todos los campos de respuesta
 */
 function limpiarFormulario(){
-    document.getElementById("r1").innerHTML="";
-    document.getElementById("r2").innerHTML="";
-    document.getElementById("r3").innerHTML="";
-    document.getElementById("r4").innerHTML="";
-    document.getElementById("r5").innerHTML="";
-    document.getElementById("r6").innerHTML="";
-    document.getElementById("r7").innerHTML="";
-    document.getElementById("r8").innerHTML="";
-    document.getElementById("r9").innerHTML="";
-    document.getElementById("r10").innerHTML="";
+    document.getElementById("resultado1").innerHTML="";
+    document.getElementById("resultado2").innerHTML="";
+    document.getElementById("resultado3").innerHTML="";
+    document.getElementById("resultado4").innerHTML="";
+    document.getElementById("resultado5").innerHTML="";
+    document.getElementById("resultado6").innerHTML="";
+    document.getElementById("resultado7").innerHTML="";
+    document.getElementById("resultado8").innerHTML="";
+    document.getElementById("resultado9").innerHTML="";
+    document.getElementById("resultado10").innerHTML="";
+    document.getElementById("resultado11").innerHTML="";
 
 }
 
@@ -386,17 +412,18 @@ function generarEjercicio1(){
 function llenarDatos(){
     if(validez){
     document.getElementById("err").innerHTML="";
-    document.getElementById("r1").innerHTML=decimalAString(maskDecimal);
-    document.getElementById("r2").innerHTML=decimalAString(broadcastDecimal);
-    document.getElementById("r3").innerHTML=netId;
-    document.getElementById("r4").innerHTML=hostId;
-    document.getElementById("r5").innerHTML=dirHost;
-    obtenerRangoDirecciones();
+    document.getElementById("resultado1").innerHTML=decimalAString(redDecimal);
+    document.getElementById("resultado2").innerHTML=decimalAString(broadcastDecimal);
+    document.getElementById("resultado3").innerHTML=dirSubred-2;
+    document.getElementById("resultado4").innerHTML=dirHost;
+
+    /*obtenerRangoDirecciones();
     document.getElementById("r6").innerHTML=decimalAString(redDecimal);
     document.getElementById("r7").innerHTML=decimalAString(rango[0]);
     document.getElementById("r8").innerHTML=decimalAString(rango[1]);
     document.getElementById("r9").innerHTML=decimalAString(broadcastDecimal);
     document.getElementById("r10").innerHTML=obtenerListadoDireccionesHost();
+    */
     }else{
         document.getElementById("err").innerHTML= mensajeErr;
         limpiarFormulario();
@@ -409,14 +436,14 @@ function llenarDatos(){
 * ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
 */
 function ejecutarTercerPunto(){
-    /*leerDatos();
+    leerDatos();
     recibirDatos();
-    llenarDatos();*/
-    crearTabla(7);
+    llenarDatos();
+    crearTablaTotal(dirSubred);
     
 }
 
-function crearTabla(filas){
+function crearTablaTotal(filas){
 
     var  tabla = document.getElementById("tabla");
     tabla.innerHTML="<tr><td>Numero subred</td><td>ip subred</td><td>rango de host</td><td>broadcast de la sudred</td></tr>";

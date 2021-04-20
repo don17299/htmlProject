@@ -60,14 +60,12 @@
     <br>
     <h5>#Cantidad de subredes utilizables en la red: </h5> <p id="resultado3"></p>
     <br>
-    <h5>Cantidad de hosts por cada subred:</h5>
-    <br>
+    <h5>Cantidad de hosts por cada subred:</h5> <p id="resultado4"></p>
+    <hr><br>
     <div>
         <p class="h5" > Escriba el numero de la subred o  por defecto se mostraran todas</p> 
         <input class="d-inline" type="number" min="0" id="numeroSubred"> 
         <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar red</button>
-        <button class="btn btn-primary d-inline" id="buscarbrodcast"  type="button" onclick="buscarBroadcastSubNet()">Consultar broadcast </button>
-
     </div>
     <br>
     <div id="contenedorTabla" >
@@ -81,8 +79,15 @@
 
         </table>
     </div>
-    <hr>
-
+    <hr><br>
+    <div>
+    <h5>Broadcast de una subred especifica:</h5>
+    <br>
+    <input class="d-inline" type="number" min="0" id="numeroSubred">
+    <button class="btn btn-primary d-inline" id="buscarbrodcast"  type="button" onclick="buscarBroadcastSubNet()">Consultar broadcast </button>
+    <h5>Direccion de Broadcast: </h5><p id="resultado5"></p>
+    </div>
+    <hr><br>
     <h5> Buscar host dentro de subred:</h5><br>
     <div >
         <p class="d-inline">Sub red:</p>
@@ -91,22 +96,24 @@
         <input class="d-inline" type="number" min="0" id="numeroSubred"> 
         <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">buscar host en red</button>
         <br><br>
-        <h5 class="d-inline">Direccion del host: </h5>
-        <p class="d-inline" id="respuesta4"></p>
+        <h5 class="d-inline">Direccion del host:</h5>
+        <p class="d-inline mx-5" id="resultado6"></p>
     </div>
 
-
-
-    
-    <h6>Red:</h6>
-    <p id="resultado4" class="text-danger"></p>
-    <p id="resultado5" class="text-primary"></p>
+    <hr><br>
+    <h5>Rango completo de direcciones de una subred:</h5><br>
+    <input class="d-inline" type="number" min="0" id="numeroSubred"> 
+    <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar red</button>
+    <br><br>
+    <h6>SubRed:</h6>
+    <p id="resultado7" class="text-danger"></p>
+    <p id="resultado8" class="text-primary"></p>
     <p>.<br>.<br>.</p>
-    <p id="resultado6" class="text-primary"></p>
-    <h6>Broadcast:</h6>
-    <p id="resultado7" class="text-danger"></p><br>
+    <p id="resultado9" class="text-primary"></p>
+    <h6>Broadcast de SubRed:</h6>
+    <p id="resultado10" class="text-danger"></p><br>
     <h5>Listado de direcciones de host:</h5><br>
-    <p id="resultado8"></p>
+    <p id="resultado11"></p>
     </div>
     </section>
 
