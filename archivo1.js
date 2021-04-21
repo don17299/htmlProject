@@ -6,7 +6,7 @@ Jorge Ivan Hurtado Imbachi
 */
 
 //cada octeto de la ip ingresada, netid, hostid y dirrecciones para los host.
-var ip1, ip2, ip3, ip4, netId, hostId, dirHost;
+var ip1, ip2, ip3, ip4, netId, hostId, numHost;
 //mascara de subred binaria.
 var maskBinario= new Array(32);
 //mascara de subred decimal.
@@ -31,25 +31,35 @@ var validez=true;
 var mensajeErr;
 
 /*
+* ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
+*/
+function ejecutarPrimerPunto(){
+    leerDatos();
+    recibirDatos();
+    llenarDatos();
+}
+
+/*
 *Se encarga de llamar a los metodos
 *que obtendran sus valores a partir de los datos capturados en el metodo leerDatos().
 */
 function recibirDatos(){
+    
     if(isNaN(ip1) || isNaN(ip2) || isNaN(ip3) || isNaN(ip4) || isNaN(netId)){
         
         validez=false;
         mensajeErr="Campos Vacios";
-    }else{
+    }else{obtenerIp();
         if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30){
             validez=false;
         mensajeErr="Valores fuera de Rango";
-        }else if(!validarNet() || !validarIp()){
+        }else if(!validarIp()|| !validarNet()){
             validez =false;
             mensajeErr="Mascara de red o Direccion Ip Erroneas";
         }
         else {
         hostId=32-netId;
-        dirHost=2**hostId-2;
+        numHost=2**hostId-2;
         obtenerMascara();
         obtenerBroadCast();
         obtenerRed();
@@ -78,7 +88,9 @@ function validarNetRandom(){
     return posicion+1;
 }
 
-
+/**
+ * Metodo que valida la ip para que existan host.
+ */
 function validarIp(){
     obtenerIp();
     if(ipBinario[30]==1 || ipBinario[31]==1){
@@ -142,7 +154,6 @@ function obtenerBroadCast(){
       broadcastBinario[i]=1;
     }
 
-    //console.log(broadcastBinario)
     broadcastDecimal=binarioADecimal(broadcastBinario);
 }
 
@@ -152,12 +163,14 @@ function obtenerBroadCast(){
 function obtenerRed(){
 
     for(var i=0;i<32;i++){
+
+        redBinario[i]=ipBinario[i]*maskBinario[i];
+        /*
         if(ipBinario[i]&&maskBinario[i]==1){
             redBinario[i]=1;
         }else{
             redBinario[i]=0;
-        }
-
+        }*/
     }
     redDecimal=binarioADecimal(redBinario);
 }
@@ -278,37 +291,31 @@ function decimalAString(decimal){
 /*
 *Obtiene el rango de direcciones(host1 y host final) y los almacena en el array rango.
 */
-function obtenerRangoDirecciones(){
-    var host1= new Array(), host2= new Array(), hostd1, hostd2;
+function obtenerExtremosDirecciones(){
+    var hostInicial= new Array(), hostUltimo= new Array(), hostInicialD, hostUltimoD;
 
-    host1=[].concat(redBinario);
-    host2=[].concat(broadcastBinario);
-    console.log(host1);
-    console.log(host2);
-    host1[31]=1;
-    host2[31]=0;
-    console.log(host1);
-    console.log(host2);
-    hostd1=binarioADecimal(host1);
-    hostd2=binarioADecimal(host2);
-    console.log(hostd1);
-    console.log(hostd2);
-    rango[0]=hostd1;
-    rango[1]=hostd2;
+    hostInicial=[].concat(redBinario);
+    hostUltimo=[].concat(broadcastBinario);
+    hostInicial[31]=1;
+    hostUltimo[31]=0;
+    hostInicialD=binarioADecimal(hostInicial);
+    hostUltimoD=binarioADecimal(hostUltimo);
+    rango[0]=hostInicialD;
+    rango[1]=hostUltimoD;
 }
 
 /*
 *Obtiene cada direccion de host que puesde obtenerse.
 @return retorna la cadena que contiene todas las direcciones de host.
+* redDecimal={ip1,ip2,ip3,ip4} 127.168.32.2 00000100 /30
 */
 function obtenerListadoDireccionesHost(){
    var direcciones="";
-    for(var i=0;i<dirHost;i++){
+    for(var i=0;i<numHost;i++){
         redDecimal[3]=redDecimal[3]+1;
         direcciones+=decimalAString(redDecimal)+" || \n";
         if(redDecimal[3]==255){
             redDecimal[3]=0;
-            direcciones+=decimalAString(redDecimal)+" || \n";
             i++;
             if(redDecimal[2]<255){
             redDecimal[2]=redDecimal[2]+1;
@@ -323,7 +330,7 @@ function obtenerListadoDireccionesHost(){
                     }
                 }
             }
-            
+          direcciones+=decimalAString(redDecimal)+" || \n";  
         }
     }
     
@@ -390,8 +397,8 @@ function llenarDatos(){
     document.getElementById("r2").innerHTML=decimalAString(broadcastDecimal);
     document.getElementById("r3").innerHTML=netId;
     document.getElementById("r4").innerHTML=hostId;
-    document.getElementById("r5").innerHTML=dirHost;
-    obtenerRangoDirecciones();
+    document.getElementById("r5").innerHTML=numHost;
+    obtenerExtremosDirecciones();
     document.getElementById("r6").innerHTML=decimalAString(redDecimal);
     document.getElementById("r7").innerHTML=decimalAString(rango[0]);
     document.getElementById("r8").innerHTML=decimalAString(rango[1]);
@@ -403,14 +410,5 @@ function llenarDatos(){
         validez=true;
     }
 
-}
-
-/*
-* ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
-*/
-function ejecutarPrimerPunto(){
-    leerDatos();
-    recibirDatos();
-    llenarDatos();
 }
 

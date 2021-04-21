@@ -6,7 +6,7 @@ Jorge Ivan Hurtado Imbachi
 */
 
 //cada octeto de la ip ingresada, netid, hostid, dirrecciones para los host, bits para subred y direcciones de subred.
-var ip1, ip2, ip3, ip4, netId, hostId, dirHost, bitsSubred, dirSubred;
+var ip1, ip2, ip3, ip4, netId, hostId, numHost, bitsSubred, dirSubred;
 //mascara de subred binaria.
 var maskBinario= new Array(32);
 //mascara de subred decimal.
@@ -49,7 +49,7 @@ function recibirDatos(){
         }
         else {
         hostId=32-netId;
-        dirHost=2**(hostId-bitsSubred)-2;
+        numHost=2**(hostId-bitsSubred)-2;
         dirSubred=2**bitsSubred;
         obtenerMascara();
         obtenerBroadCast();
@@ -147,15 +147,13 @@ function obtenerBroadCast(){
 
 /*
 *Obtiene la direccion de red con la red binaria y la mascara binaria.
+* se realiza la operacion and.
 */
 function obtenerRed(){
 
     for(var i=0;i<32;i++){
-        if(ipBinario[i]&&maskBinario[i]==1){
-            redBinario[i]=1;
-        }else{
-            redBinario[i]=0;
-        }
+
+        redBinario[i]=ipBinario[i]*maskBinario[i];
 
     }
     redDecimal=binarioADecimal(redBinario);
@@ -320,7 +318,7 @@ function decimalAString(decimal){
 /**
  * obtiene el rango de direcciones de los host en la red principal
  */
-function obtenerRangoDirecciones(){
+function obtenerExtremosDirecciones(){
     var hostInicial= new Array(), hostPenultimo= new Array(), hostInicialD, hostPenultimoD;
 
     hostInicial=[].concat(redBinario);
@@ -362,7 +360,7 @@ function obtenerRangoDireccionesSubRed(subred, broadcast){
 */
 function obtenerListadoDireccionesHost(){
    var direcciones="";
-    for(var i=0;i<dirHost;i++){
+    for(var i=0;i<numHost;i++){
         redDecimal[3]=redDecimal[3]+1;
         direcciones+=decimalAString(redDecimal)+" || \n";
         if(redDecimal[3]==255){
@@ -410,7 +408,7 @@ function limpiarFormulario(){
 /*
 *ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
 */
-function generarEjercicio1(){
+function generarEjercicio3(){
     var isMascara=false;
     var isIp=false;
     var numero=0;
@@ -449,7 +447,7 @@ function llenarDatos(){
     document.getElementById("resultado1").innerHTML=decimalAString(redDecimal);
     document.getElementById("resultado2").innerHTML=decimalAString(broadcastDecimal);
     document.getElementById("resultado3").innerHTML=dirSubred-2;
-    document.getElementById("resultado4").innerHTML=dirHost;
+    document.getElementById("resultado4").innerHTML=numHost;
     }else{
         document.getElementById("err").innerHTML= mensajeErr;
         limpiarFormulario();
@@ -485,7 +483,7 @@ function crearTablaTotal(filas){
         var fila =document.createElement("tr");
 
             var celda1 = document.createElement("td");
-            var textoCelda = document.createTextNode((i+1));
+            var textoCelda = document.createTextNode((i));
             celda1.appendChild(textoCelda);
             celda1.setAttribute("border","1");
             fila.appendChild(celda1);
@@ -507,6 +505,14 @@ function crearTablaTotal(filas){
             celda4.appendChild(textoCelda);
             celda4.setAttribute("border","1");
             fila.appendChild(celda4);
+
+            if(i==0 || i==filas-1){
+                var celda5 = document.createElement("td");
+                var textoCelda = document.createTextNode("subred no utilizable");
+                celda5.appendChild(textoCelda);
+                celda5.setAttribute("border","1");
+                fila.appendChild(celda5); 
+            }
         
         tblBody.appendChild(fila);
     }

@@ -6,7 +6,7 @@ Jorge Ivan Hurtado Imbachi
 */
 
 //cada octeto de la ip ingresada, netid, hostid y dirrecciones para los host.
-var ip1, ip2, ip3, ip4, netId, hostId, dirHost;
+var ip1, ip2, ip3, ip4, netId, hostId, numHost;
 //mascara de subred binaria.
 var maskBinario= new Array(32);
 //mascara de subred decimal.
@@ -46,7 +46,7 @@ function recibirDatos(){
         }
         else {
         hostId=32-netId;
-        dirHost=2**hostId-2;
+        numHost=2**hostId-2;
         obtenerIp();
         obtenerMascara();
         obtenerBroadCast();
@@ -248,21 +248,15 @@ function decimalAString(decimal){
 * 11100011.00011100.10100000.00000001
 * ..... 111111110
 */
-function obtenerRangoDirecciones(){
+function obtenerExtremosDirecciones(){
     var hostInicial= new Array(), hostPenultimo= new Array(), hostInicialD, hostPenultimoD;
 
     hostInicial=[].concat(redBinario);
     hostPenultimo=[].concat(broadcastBinario);
-    //console.log(host1);
-    //console.log(host2);
     hostInicial[31]=1;
     hostPenultimo[31]=0;
-    //console.log(host1);
-    //console.log(host2);
     hostInicialD=binarioADecimal(hostInicial);
     hostPenultimoD=binarioADecimal(hostPenultimo);
-    //console.log(hostd1);
-    //console.log(hostd2);
     rango[0]=hostInicialD;
     rango[1]=hostPenultimoD;
 }
@@ -273,7 +267,7 @@ function obtenerRangoDirecciones(){
 */
 function obtenerListadoDireccionesHost(){
    var direcciones="";
-    for(var i=0;i<dirHost;i++){
+    for(var i=0;i<numHost;i++){
         redDecimal[3]=redDecimal[3]+1;
         direcciones+=decimalAString(redDecimal)+" || \n";
         if(redDecimal[3]==255){
@@ -345,8 +339,8 @@ function llenarTodosLosCampos(){
         document.getElementById("err").innerHTML="";
         document.getElementById("resultado1").innerHTML=decimalAString(redDecimal);
         document.getElementById("resultado2").innerHTML=decimalAString(broadcastDecimal);
-        document.getElementById("resultado3").innerHTML=dirHost;
-        obtenerRangoDirecciones();
+        document.getElementById("resultado3").innerHTML=numHost;
+        obtenerExtremosDirecciones();
         document.getElementById("resultado4").innerHTML=decimalAString(redDecimal);
         document.getElementById("resultado5").innerHTML=decimalAString(rango[0]);
         document.getElementById("resultado6").innerHTML=decimalAString(rango[1]);
