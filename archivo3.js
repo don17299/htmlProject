@@ -398,10 +398,10 @@ function limpiarFormulario(){
     document.getElementById("resultado5").innerHTML="";
     document.getElementById("resultado6").innerHTML="";
     document.getElementById("resultado7").innerHTML="";
-    document.getElementById("resultado8").innerHTML="";
-    document.getElementById("resultado9").innerHTML="";
-    document.getElementById("resultado10").innerHTML="";
-    document.getElementById("resultado11").innerHTML="";
+    //document.getElementById("resultado8").innerHTML="";
+    //document.getElementById("resultado9").innerHTML="";
+    //document.getElementById("resultado10").innerHTML="";
+    //document.getElementById("resultado11").innerHTML="";
 
 }
 
