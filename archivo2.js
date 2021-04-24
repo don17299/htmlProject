@@ -266,33 +266,32 @@ function obtenerExtremosDirecciones(){
 @return retorna la cadena que contiene todas las direcciones de host.
 */
 function obtenerListadoDireccionesHost(){
-   var direcciones="";
-    for(var i=0;i<numHost;i++){
-        redDecimal[3]=redDecimal[3]+1;
-        direcciones+=decimalAString(redDecimal)+" || \n";
-        if(redDecimal[3]==255){
-            redDecimal[3]=0;
-            direcciones+=decimalAString(redDecimal)+" || \n";
-            i++;
-            if(redDecimal[2]<255){
-            redDecimal[2]=redDecimal[2]+1;
-            }else{
-                redDecimal[2]=0
-                if(redDecimal[1]<255){
-                    redDecimal[1]=redDecimal[1]+1;
-                }else{
-                    redDecimal[1]=0;
-                    if(redDecimal[0]<255){
-                        redDecimal[0]=redDecimal[0]+1;
-                    }
-                }
-            }
-            
-        }
-    }
-    
-    return direcciones;
-}
+    var direcciones="";
+     for(var i=0;i<numHost;i++){
+         redDecimal[3]=redDecimal[3]+1;
+         direcciones+=decimalAString(redDecimal)+" || \n";
+         if(redDecimal[3]==255){
+             redDecimal[3]=0;
+             i++;
+             if(redDecimal[2]<255){
+             redDecimal[2]=redDecimal[2]+1;
+             }else{
+                 redDecimal[2]=0
+                 if(redDecimal[1]<255){
+                     redDecimal[1]=redDecimal[1]+1;
+                 }else{
+                     redDecimal[1]=0;
+                     if(redDecimal[0]<255){
+                         redDecimal[0]=redDecimal[0]+1;
+                     }
+                 }
+             }
+           direcciones+=decimalAString(redDecimal)+" || \n";  
+         }
+     }
+     
+     return direcciones;
+ }
 
 /*
 *Limpia todos los campos de respuesta

@@ -35,6 +35,7 @@ var mensajeErr;
 *que obtendran sus valores a partir de los datos capturados en el metodo leerDatos().
 */
 function recibirDatos(){
+    //esto es magico
     if(isNaN(ip1) || isNaN(ip2) || isNaN(ip3) || isNaN(ip4) || isNaN(netId) || isNaN(bitsSubred)){
         
         validez=false;
@@ -43,7 +44,7 @@ function recibirDatos(){
         if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30||bitsSubred>hostId||bitsSubred<2){
             validez=false;
         mensajeErr="Valores fuera de Rango";
-        }else if(!validarNet() || !validarIp()){
+        }else if(!validarIp() || !validarNet()){
             validez =false;
             mensajeErr="Mascara de red o Direccion Ip Erroneas";
         }
@@ -359,33 +360,32 @@ function obtenerRangoDireccionesSubRed(subred, broadcast){
 @return retorna la cadena que contiene todas las direcciones de host.
 */
 function obtenerListadoDireccionesHost(){
-   var direcciones="";
-    for(var i=0;i<numHost;i++){
-        redDecimal[3]=redDecimal[3]+1;
-        direcciones+=decimalAString(redDecimal)+" || \n";
-        if(redDecimal[3]==255){
-            redDecimal[3]=0;
-            direcciones+=decimalAString(redDecimal)+" || \n";
-            i++;
-            if(redDecimal[2]<255){
-            redDecimal[2]=redDecimal[2]+1;
-            }else{
-                redDecimal[2]=0
-                if(redDecimal[1]<255){
-                    redDecimal[1]=redDecimal[1]+1;
-                }else{
-                    redDecimal[1]=0;
-                    if(redDecimal[0]<255){
-                        redDecimal[0]=redDecimal[0]+1;
-                    }
-                }
-            }
-            
-        }
-    }
-    
-    return direcciones;
-}
+    var direcciones="";
+     for(var i=0;i<numHost;i++){
+         redDecimal[3]=redDecimal[3]+1;
+         direcciones+=decimalAString(redDecimal)+" || \n";
+         if(redDecimal[3]==255){
+             redDecimal[3]=0;
+             i++;
+             if(redDecimal[2]<255){
+             redDecimal[2]=redDecimal[2]+1;
+             }else{
+                 redDecimal[2]=0
+                 if(redDecimal[1]<255){
+                     redDecimal[1]=redDecimal[1]+1;
+                 }else{
+                     redDecimal[1]=0;
+                     if(redDecimal[0]<255){
+                         redDecimal[0]=redDecimal[0]+1;
+                     }
+                 }
+             }
+           direcciones+=decimalAString(redDecimal)+" || \n";  
+         }
+     }
+     
+     return direcciones;
+ }
 
 /*
 *Limpia todos los campos de respuesta
@@ -398,10 +398,13 @@ function limpiarFormulario(){
     document.getElementById("resultado5").innerHTML="";
     document.getElementById("resultado6").innerHTML="";
     document.getElementById("resultado7").innerHTML="";
-    //document.getElementById("resultado8").innerHTML="";
-    //document.getElementById("resultado9").innerHTML="";
-    //document.getElementById("resultado10").innerHTML="";
-    //document.getElementById("resultado11").innerHTML="";
+    document.getElementById("resultado8").innerHTML="";
+    document.getElementById("resultado9").innerHTML="";
+    document.getElementById("resultado10").innerHTML="";
+    document.getElementById("resultado11").innerHTML="";
+    document.getElementById("resultado12").innerHTML="";
+    document.getElementById("resultado13").innerHTML="";
+    document.getElementById("resultado14").innerHTML="";
 
 }
 
@@ -473,7 +476,6 @@ function crearTablaTotal(filas){
     tabla.innerHTML="<tr><td>Numero subred</td><td>ip subred</td><td>rango de host</td><td>broadcast de la sudred</td></tr>";
     var tblBody = document.createElement("tbody");
     
-    var filaTitulo =document.createElement("tr");
 
     for (var i=0; i< filas;i++){
         var subred=obtenerSubred((i));
@@ -521,28 +523,70 @@ function crearTablaTotal(filas){
     tabla.setAttribute("border", "2");
 }
 
-function crearTabla(filas){
+
+function crearTablaParcial(){
+
+    var numeroSubred= document.getElementById("numeroSubred").value;
+
+    if(numeroSubred.length<=0){
+        document.getElementById("err2").innerHTML="";
+        crearTablaTotal(dirSubred);
+    }else{
+
+    if(numeroSubred>=0 && numeroSubred<=dirSubred-1){
+
+        document.getElementById("err2").innerHTML="";
 
     var  tabla = document.getElementById("tabla");
     tabla.innerHTML="<tr><td>Numero subred</td><td>ip subred</td><td>rango de host</td><td>broadcast de la sudred</td></tr>";
     var tblBody = document.createElement("tbody");
-    
-    var filaTitulo =document.createElement("tr");
 
-    for (var i=0; i< filas;i++){
-
+        var subred=obtenerSubred((numeroSubred));
+        var broadcastS=obtenerBroadcastSubred(subred);
+        var rangoS=obtenerRangoDireccionesSubRed(subred,broadcastS);
+        
         var fila =document.createElement("tr");
 
-        for(var j=0; j < 4; j++){
-            var celda = document.createElement("td");
-            var textoCelda = document.createTextNode("celda en la fila: "+i+" columna: "+j)
-            celda.appendChild(textoCelda);
-            celda.setAttribute("border","1");
-            fila.appendChild(celda);
-        }
+            var celda1 = document.createElement("td");
+            var textoCelda = document.createTextNode((numeroSubred));
+            celda1.appendChild(textoCelda);
+            celda1.setAttribute("border","1");
+            fila.appendChild(celda1);
+
+            var celda2 = document.createElement("td");
+            var textoCelda = document.createTextNode(decimalAString(binarioADecimal(subred)));
+            celda2.appendChild(textoCelda);
+            celda2.setAttribute("border","1");
+            fila.appendChild(celda2);
+
+            var celda3 = document.createElement("td");
+            var textoCelda = document.createTextNode(decimalAString(rangoS[0])+" / "+decimalAString(rangoS[1]));
+            celda3.appendChild(textoCelda);
+            celda3.setAttribute("border","1");
+            fila.appendChild(celda3);
+
+            var celda4 = document.createElement("td");
+            var textoCelda = document.createTextNode(decimalAString(binarioADecimal(broadcastS)));
+            celda4.appendChild(textoCelda);
+            celda4.setAttribute("border","1");
+            fila.appendChild(celda4);
+
+            if(numeroSubred==0 || numeroSubred==dirSubred-1){
+                var celda5 = document.createElement("td");
+                var textoCelda = document.createTextNode("subred no utilizable");
+                celda5.appendChild(textoCelda);
+                celda5.setAttribute("border","1");
+                fila.appendChild(celda5); 
+            }
+        
         tblBody.appendChild(fila);
-    } 
+
     tabla.appendChild(tblBody); 
 
     tabla.setAttribute("border", "2");
+        }else{
+            document.getElementById("err2").innerHTML="Ingrese Subredes que esten entre: 0 y " + (dirSubred-1);
+        }
+
+    }
 }

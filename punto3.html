@@ -63,9 +63,9 @@
     <h5>Cantidad de hosts por cada subred:</h5> <p id="resultado4"></p>
     <hr><br>
     <div>
-        <p class="h5" > Escriba el numero de la subred o  por defecto se mostraran todas</p> 
+        <p class="h5" > Escriba el numero de la subred (si deja el campo vacio se generará la tabla completa):</p> 
         <input class="d-inline" type="number" min="0" id="numeroSubred"> 
-        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar subred</button>
+        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="crearTablaParcial()">Consultar subred</button><h4 id="err2" class="text-danger d-inline mx-5"></h4>
     </div>
     <br>
     <div id="contenedorTabla" >
@@ -82,7 +82,7 @@
     <hr><br>
     <h5>Direccion de la Subred especifica:</h5>
     <br>
-    <input class="d-inline" type="number" min="0" id="numeroSubred">
+    <input class="d-inline" type="number" min="0" id="numeroSubred1">
     <button class="btn btn-primary d-inline" id="buscarbrodcast"  type="button" onclick="buscarBroadcastSubNet()">Consultar subred </button>
     <br>
     <h5>Direccion de la subred: </h5><p id="resultado5"></p>
@@ -135,7 +135,7 @@
         <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar Ip</button>
         <br><br>
         <h5>Subred de la Ip:</h5><p id="resultado12"></p>
-        <h4 id="err2" class="text-danger d-inline mx-5"></h4>
+        <h4 id="err3" class="text-danger d-inline mx-5"></h4>
     </div>
     <hr><br>
     <div>
@@ -158,7 +158,7 @@
         <input type="number" min="0" max="255" id="octanteHostId4" >
         <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar Ip</button>
         <br><br>
-        <h4 id="err3" class="text-danger d-inline mx-5"></h4>
+        <h4 id="err4" class="text-danger d-inline mx-5"></h4>
         <h5>Respuesta:</h5><p id="resultado13"></p>
         
     </div>
