@@ -113,17 +113,19 @@
 
     <div>
     <hr><br>
-    <h5>Rango completo de direcciones de una subred:</h5><br>
-    <input class="d-inline" type="number" min="0" id="numeroSubred"> 
-    <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar subred</button>
+    <h5>Rango completo de direcciones host de una subred:</h5><br>
+    <input class="d-inline" type="number" min="0" id="numeroSubredRangoHost"> 
+    <button class="btn btn-primary d-inline" id="calcularRangoHostSubred"  type="button" onclick="encontrarRangoParaHostSubred()">Consultar hosts en subred</button>
     <br><br>
     <h6>SubRed:</h6>
     <p id="resultado8" class="text-danger"></p>
+    <h6>primera direccion de host:</h6>
     <p id="resultado9" class="text-primary"></p>
     <p>.<br>.<br>.</p>
     <p id="resultado10" class="text-primary"></p>
-    <h6>Broadcast de SubRed:</h6>
-    <p id="resultado11" class="text-danger"></p><br>
+    <h6>ultima direccion de host:</h6>
+    <h6>Broadcast:</h6>
+    <p id="resultado11" class="text-danger">hola</p><br>
     </div>
     <hr><br>
     <div>

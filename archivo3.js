@@ -691,3 +691,13 @@ function calcularDireccionHost(numeroSubred, numeroHost){
     }
     return decimalAString(direccionesHost[0]);
 }
+
+
+/**
+ * funcion que hace esto queEl  rango  completo  de  direcciones  
+ * que  se  pueden  asignar  a  los  hosts  de  una  subred específica
+ */
+function encontrarRangoParaHostSubred(){
+    document.getElementById("numeroSubredRangoHost").value();
+
+}
