@@ -40,7 +40,7 @@ function recibirDatos(){
         validez=false;
         mensajeErr="Campos Vacios";
     }else{
-        if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30){
+        if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<0||netId>30){
             validez=false;
         mensajeErr="Valores fuera de Rango";
         }
@@ -245,8 +245,6 @@ function decimalAString(decimal){
 
 /*
 *Obtiene el rango de direcciones(host1 y host final) y los almacena en el array rango.
-* 11100011.00011100.10100000.00000001
-* ..... 111111110
 */
 function obtenerExtremosDirecciones(){
     var hostInicial= new Array(), hostPenultimo= new Array(), hostInicialD, hostPenultimoD;
@@ -268,6 +266,7 @@ function obtenerExtremosDirecciones(){
 function obtenerListadoDireccionesHost(){
     var direcciones="";
      for(var i=0;i<numHost;i++){
+         if(i<1022){
          redDecimal[3]=redDecimal[3]+1;
          direcciones+=decimalAString(redDecimal)+" || \n";
          if(redDecimal[3]==255){
@@ -288,7 +287,13 @@ function obtenerListadoDireccionesHost(){
              }
            direcciones+=decimalAString(redDecimal)+" || \n";  
          }
-     }
+        }else{
+            direcciones+="....... ||";
+            broadcastDecimal[3]=broadcastDecimal[3]-1;
+            direcciones+=decimalAString(broadcastDecimal)+"||";
+            i=numHost;
+        }
+    }
      
      return direcciones;
  }

@@ -29,6 +29,8 @@ var rango = new Array(2);
 var validez = true;
 //especifica el mensaje de error que se debe mostrar.
 var mensajeErr;
+//determina si los datos de la ip la net id y los bits de subred han sido ingresados
+var isIpIngresada=false;
 
 /*
 * ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
@@ -46,13 +48,12 @@ function ejecutarTercerPunto() {
 *que obtendran sus valores a partir de los datos capturados en el metodo leerDatos().
 */
 function recibirDatos() {
-    //esto es magico
     if (isNaN(ip1) || isNaN(ip2) || isNaN(ip3) || isNaN(ip4) || isNaN(netId) || isNaN(bitsSubred)) {
 
         validez = false;
         mensajeErr = "Campos Vacios";
     } else {
-        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 15 || netId > 30 || bitsSubred > hostId || bitsSubred < 2) {
+        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 8 || netId > 30 || bitsSubred > hostId || bitsSubred < 2) {
             validez = false;
             mensajeErr = "Valores fuera de Rango";
         } else if (!validarIp() || !validarNet()) {
@@ -60,6 +61,7 @@ function recibirDatos() {
             mensajeErr = "Mascara de red o Direccion Ip Erroneas";
         }
         else {
+            isIpIngresada=true;
             hostId = 32 - netId;
             numHost = 2 ** (hostId - bitsSubred) - 2;
             dirSubred = 2 ** bitsSubred;
@@ -471,7 +473,10 @@ function llenarDatos() {
 }
 
 
-
+/**
+ * Genera una tabla con los valores de todas las subredes posibles
+ * @param {*} filas Numero de subredes
+ */
 function crearTablaTotal(filas) {
 
     var tabla = document.getElementById("tabla");
@@ -526,7 +531,12 @@ function crearTablaTotal(filas) {
 }
 
 
+/**
+ * Genera una tabla con los valores de una subred especifica
+ */
 function crearTablaParcial() {
+
+    if(isIpIngresada){
 
     var numeroSubred = document.getElementById("numeroSubred").value;
 
@@ -592,102 +602,127 @@ function crearTablaParcial() {
 
     }
 
-
+    }else{
+        document.getElementById("err2").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
+    }
 
 }
 
+/**
+ * Genera la direccion ip de una subred especifica
+ */
 function insertarDireccionSubredEspecifica() {
+    if(isIpIngresada){
     var ipBinarioAux, ipDecimalAux = new Array();
     var direccionSubRedEspecifica = document.getElementById("direccionSubRedEspecifica").value;
-    console.log(direccionSubRedEspecifica);
     document.getElementById("resultado5").innerHTML = "";
     document.getElementById("errorAlInsertarDireccionSubredEspecifica").innerHTML = "";
-    if (direccionSubRedEspecifica >= 0 && direccionSubRedEspecifica <= dirSubred - 1) {
+    if (direccionSubRedEspecifica >= 0 && direccionSubRedEspecifica <= dirSubred - 1 && direccionSubRedEspecifica.length > 0) {
         ipBinarioAux = obtenerSubred(direccionSubRedEspecifica);
         ipDecimalAux = binarioADecimal(ipBinarioAux);
-        document.getElementById("resultado5").innerHTML = ipDecimalAux;
+        document.getElementById("resultado5").innerHTML = decimalAString(ipDecimalAux);
     } else {
 
 
         document.getElementById("errorAlInsertarDireccionSubredEspecifica").innerHTML = "Debe ingresar un numero de una direccion subred existente";
     }
 
-
+}else{
+    document.getElementById("errorAlInsertarDireccionSubredEspecifica").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
+}
 }
 
+/**
+ * Genera la direccion ip del broadcast de una subred especifica
+ */
 function insertarDireccionBroadcastEspecifica() {
+    if(isIpIngresada){
     var ipBinarioAux, ipDecimalAux, ipSubRedAux = new Array();
     var DireccionBroadcastEspecifica = document.getElementById("direccionBroadcastEspecifica").value;
 
     document.getElementById("resultado6").innerHTML = "";
     document.getElementById("errorAlInsertarBroadcastEspecifica").innerHTML = "";
-    if (DireccionBroadcastEspecifica >= 0 && DireccionBroadcastEspecifica <= dirSubred - 1) {
+    if (DireccionBroadcastEspecifica >= 0 && DireccionBroadcastEspecifica <= dirSubred - 1 && DireccionBroadcastEspecifica.length > 0) {
         ipSubRedAux = obtenerSubred(DireccionBroadcastEspecifica);
         ipBinarioAux = obtenerBroadcastSubred(ipSubRedAux);
         ipDecimalAux = binarioADecimal(ipBinarioAux);
-        document.getElementById("resultado6").innerHTML = ipDecimalAux;
+        document.getElementById("resultado6").innerHTML = decimalAString(ipDecimalAux);
     } else {
 
 
-        document.getElementById("errorAlInsertarBroadcastEspecifica").innerHTML = "Debe ingresar un numero de una direccion broadcast existente";
+        document.getElementById("errorAlInsertarBroadcastEspecifica").innerHTML = "Debe ingresar un numero de una direccion subred existente";
     }
+}else{
+        document.getElementById("errorAlInsertarBroadcastEspecifica").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
+}
 }
 
 /**
  * Esta funcion se encarga de buscar un host que pertenesca a la subred buscada
  * en caso de no estar se mostraran los avisos pertinentes
  */
-function buscarHostEnSubRed(){
+function buscarHostEnSubRed() {
 
+
+    if(isIpIngresada){
     document.getElementById("errorBuscarHostEnSubred").innerHTML = "";
-    document.getElementById("resultado7").innerHTML = "";  
+    document.getElementById("resultado7").innerHTML = "";
 
-    var numeroSubred, numeroHost, mensajeError="";
+    var numeroSubred, numeroHost, mensajeError = "";
     numeroSubred = document.getElementById("numeroSubredParaHost").value;
     numeroHost = document.getElementById("numeroHostBuscado").value;
     console.log(numeroSubred);
-    if(numeroSubred.length <= 0 || numeroHost.length <= 0){
-        document.getElementById("errorBuscarHostEnSubred").innerHTML="Campos vacios";
+    if (numeroSubred.length <= 0 || numeroHost.length <= 0) {
+        document.getElementById("errorBuscarHostEnSubred").innerHTML = "Campos vacios";
 
-    }else { 
-        if(0 <= numeroSubred && numeroSubred < dirSubred){
-            if(numeroHost>=0 && numeroHost < numHost){
-                var direccionHost = calcularDireccionHost(numeroSubred,numeroHost);
+    } else {
+        if (0 <= numeroSubred && numeroSubred < dirSubred) {
+            if (numeroHost >= 0 && numeroHost < numHost) {
+                var direccionHost = calcularDireccionHost(numeroSubred, numeroHost);
                 document.getElementById("resultado7").innerHTML = direccionHost;
-            }else{
-                document.getElementById("errorBuscarHostEnSubred").innerHTML="Numero de host fuera de rango, desde 0, hasta "+(numHost-1);
+            } else {
+                document.getElementById("errorBuscarHostEnSubred").innerHTML = "Numero de host fuera de rango, desde 0, hasta " + (numHost - 1);
             }
-        }else{
+        } else {
             document.getElementById("errorBuscarHostEnSubred").innerHTML = "Ingrese Subredes que esten entre: 0 y " + (dirSubred - 1);
-        }   
+        }
     }
+}else{
+    document.getElementById("errorBuscarHostEnSubred").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
+}
 }
 
 
-function calcularDireccionHost(numeroSubred, numeroHost){
+/**
+ * Devuelve un host especifico de una subred especifica
+ * @param {*} numeroSubred numero decimal de la subred
+ * @param {*} numeroHost numero decimal de host
+ * @returns cadena que representa el host buscado
+ */
+function calcularDireccionHost(numeroSubred, numeroHost) {
 
     var direccionSubRedEspecifica = obtenerSubred(numeroSubred);
     var direccionesHost = obtenerRangoDireccionesSubRed(direccionSubRedEspecifica, obtenerBroadcastSubred(direccionSubRedEspecifica));
 
-    for (var i = 0; i < numeroHost; i++){
-        direccionesHost[0][3]+=(1);
-            if(direccionesHost[3]==255){
-                direccionesHost[3]=0;
-                i++;
-                if(direccionesHost[2]<255){
-                    direccionesHost[2]=direccionesHost[2]+1;
-                }else{
-                    direccionesHost[2]=0
-                    if(direccionesHost[1]<255){
-                        direccionesHost[1]=direccionesHost[1]+1;
-                    }else{
-                        direccionesHost[1]=0;
-                        if(direccionesHost[0]<255){
-                            direccionesHost[0]=direccionesHost[0]+1;
-                        }
+    for (var i = 0; i < numeroHost; i++) {
+        direccionesHost[0][3] += (1);
+        if (direccionesHost[3] == 255) {
+            direccionesHost[3] = 0;
+            i++;
+            if (direccionesHost[2] < 255) {
+                direccionesHost[2] = direccionesHost[2] + 1;
+            } else {
+                direccionesHost[2] = 0
+                if (direccionesHost[1] < 255) {
+                    direccionesHost[1] = direccionesHost[1] + 1;
+                } else {
+                    direccionesHost[1] = 0;
+                    if (direccionesHost[0] < 255) {
+                        direccionesHost[0] = direccionesHost[0] + 1;
                     }
                 }
             }
+        }
     }
     return decimalAString(direccionesHost[0]);
 }
@@ -697,7 +732,134 @@ function calcularDireccionHost(numeroSubred, numeroHost){
  * funcion que hace esto queEl  rango  completo  de  direcciones  
  * que  se  pueden  asignar  a  los  hosts  de  una  subred específica
  */
-function encontrarRangoParaHostSubred(){
-    document.getElementById("numeroSubredRangoHost").value();
+function encontrarRangoParaHostSubred() {
+    if(isIpIngresada){
+    var numSubred = document.getElementById("numeroSubredRangoHost").value;
+    document.getElementById("resultado8").innerHTML = "";
+    document.getElementById("resultado9").innerHTML = "";
+    document.getElementById("resultado10").innerHTML = "";
+    document.getElementById("resultado11").innerHTML = "";
 
+    if (numSubred.length > 0 && numSubred >= 0 && numSubred <= dirSubred - 1) {
+        document.getElementById("errorRango").innerHTML = "";
+        var subred = obtenerSubred(numSubred);
+        var broadcast = obtenerBroadcastSubred(subred);
+        var rango = obtenerRangoDireccionesSubRed(subred, broadcast);
+
+        document.getElementById("resultado8").innerHTML = decimalAString(binarioADecimal(subred));
+        document.getElementById("resultado9").innerHTML = decimalAString(rango[0]) + " - primer host";
+        document.getElementById("resultado10").innerHTML = decimalAString(rango[1]) + " - ultimo host";
+        document.getElementById("resultado11").innerHTML = decimalAString(binarioADecimal(broadcast));
+    } else {
+        document.getElementById("errorRango").innerHTML = "Subred invalida";
+    }
+}else{
+    document.getElementById("errorRango").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
+}
+}
+
+/**
+ * Muestra la direccion de la subred de una ip ingresada 
+ */
+function determinarSubredDeHost() {
+    if(isIpIngresada){
+    document.getElementById("resultado12").innerHTML="";
+    var octH1 = parseInt(document.getElementById("octanteHost1").value);
+    var octH2 = parseInt(document.getElementById("octanteHost2").value);
+    var octH3 = parseInt(document.getElementById("octanteHost3").value);
+    var octH4 = parseInt(document.getElementById("octanteHost4").value);
+
+    if (isNaN(octH1) || isNaN(octH2) || isNaN(octH3) || isNaN(octH4)) {
+
+        document.getElementById("errHostSubred").innerHTML = "Campos Vacios";
+    } else {
+        if (octH1 < 0 || octH1 > 255 || octH2 < 0 || octH2 > 255 || octH3 < 0 || octH3 > 255 || octH4 < 0 || octH4 > 255) {
+            document.getElementById("errHostSubred").innerHTML = "Valores fuera de Rango";
+        } else {
+            document.getElementById("errHostSubred").innerHTML = "";
+            var ipHostBinario=retornarSubredHost(octH1,octH2,octH3,octH4);
+            if(ipHostBinario!=null){
+            document.getElementById("resultado12").innerHTML=decimalAString(binarioADecimal(ipHostBinario));
+            }else{
+                document.getElementById("errHostSubred").innerHTML = "Debe ingresar una direccion ip que este en el mismo ambito que la principal";            
+            }
+        }
+    }
+}else{
+    document.getElementById("errHostSubred").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
+}
+}
+
+function retornarSubredHost(octH1,octH2,octH3,octH4){
+    var verdad=true;
+    array1 = decimalABinario(octH1);
+    array2 = decimalABinario(octH2);
+    array3 = decimalABinario(octH3);
+    array4 = decimalABinario(octH4);
+
+    ipHostBinario = array1.concat(array2)
+    ipHostBinario = ipHostBinario.concat(array3);
+    ipHostBinario = ipHostBinario.concat(array4);
+
+    for(var j=0;j<netId && verdad;j++){
+        if(ipHostBinario[j]!=ipBinario[j]){
+            verdad=false;
+        }
+    }
+    
+    if(verdad){
+    for(var i=(netId+bitsSubred);i<32;i++){
+        ipHostBinario[i]=0;
+    }
+    
+    return ipHostBinario;
+    }else{
+        return null;
+    }
+}
+
+function determinarSubredDireccionesIp(){
+    if(isIpIngresada){
+        document.getElementById("resultado13").innerHTML="";
+        var oct1H1 = parseInt(document.getElementById("octanteHost1,1").value);
+        var oct1H2 = parseInt(document.getElementById("octanteHost1,2").value);
+        var oct1H3 = parseInt(document.getElementById("octanteHost1,3").value);
+        var oct1H4 = parseInt(document.getElementById("octanteHost1,4").value);
+        var oct2H1 = parseInt(document.getElementById("octanteHost2,1").value);
+        var oct2H2 = parseInt(document.getElementById("octanteHost2,2").value);
+        var oct2H3 = parseInt(document.getElementById("octanteHost2,3").value);
+        var oct2H4 = parseInt(document.getElementById("octanteHost2,4").value);
+    
+        if (isNaN(oct1H1) || isNaN(oct1H2) || isNaN(oct1H3) || isNaN(oct1H4) || isNaN(oct2H1) || isNaN(oct2H2) || isNaN(oct2H3) || isNaN(oct2H4)) {
+    
+            document.getElementById("errDirecciones1,2").innerHTML = "Campos Vacios";
+        } else {
+            if (oct1H1 < 0 || oct1H1 > 255 || oct1H2 < 0 || oct1H2 > 255 || oct1H3 < 0 || oct1H3 > 255 || oct1H4 < 0 || oct1H4 > 255 || oct2H1 < 0 || oct2H1 > 255 || oct2H2 < 0 || oct2H2 > 255 || oct2H3 < 0 || oct2H3 > 255 || oct2H4 < 0 || oct2H4 > 255) {
+                document.getElementById("errDirecciones1,2").innerHTML = "Valores fuera de Rango";
+            } else {
+                document.getElementById("errDirecciones1,2").innerHTML = "";
+                var ipHostBinario1=retornarSubredHost(oct1H1,oct1H2,oct1H3,oct1H4);
+                var ipHostBinario2=retornarSubredHost(oct2H1,oct2H2,oct2H3,oct2H4);
+                if(ipHostBinario1!=null && ipHostBinario2!=null){
+                    var cadena1=decimalAString(binarioADecimal(ipHostBinario1));
+                    var cadena2=decimalAString(binarioADecimal(ipHostBinario2));
+
+                    if(cadena1==cadena2){
+                        document.getElementById("resultado13").innerHTML="Ambas direcciones Ip perteneces a la subred:"+cadena1;
+                    }else{
+                        document.getElementById("resultado13").innerHTML="La Ip 1 pertenece a la subred:"+cadena1+" y la Ip 2 pertenece a la subred:"+cadena2;
+                    }
+                }else{
+                    document.getElementById("errDirecciones1,2").innerHTML = "Debe ingresar direcciones ip que esten en el mismo ambito que la principal";            
+                }
+            }
+        }
+    }else{
+        document.getElementById("errDirecciones1,2").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
+    }
+
+}
+
+function darNdireccionesIp(){
+    
 }

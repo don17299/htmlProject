@@ -50,7 +50,7 @@ function recibirDatos(){
         validez=false;
         mensajeErr="Campos Vacios";
     }else{obtenerIp();
-        if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<15||netId>30){
+        if(ip1<0||ip1>255||ip2<0||ip2>255||ip3<0||ip3>255||ip4<0||ip4>255||netId<0||netId>30){
             validez=false;
         mensajeErr="Valores fuera de Rango";
         }else if(!validarIp()|| !validarNet()){
@@ -312,6 +312,7 @@ function obtenerExtremosDirecciones(){
 function obtenerListadoDireccionesHost(){
    var direcciones="";
     for(var i=0;i<numHost;i++){
+        if(i<1022){
         redDecimal[3]=redDecimal[3]+1;
         direcciones+=decimalAString(redDecimal)+" || \n";
         if(redDecimal[3]==255){
@@ -332,6 +333,12 @@ function obtenerListadoDireccionesHost(){
             }
           direcciones+=decimalAString(redDecimal)+" || \n";  
         }
+      }else{
+          direcciones+="....... ||";
+          broadcastDecimal[3]=broadcastDecimal[3]-1;
+          direcciones+=decimalAString(broadcastDecimal)+"||";
+          i=numHost;
+      }
     }
     
     return direcciones;
@@ -400,8 +407,8 @@ function llenarDatos(){
     document.getElementById("r5").innerHTML=numHost;
     obtenerExtremosDirecciones();
     document.getElementById("r6").innerHTML=decimalAString(redDecimal);
-    document.getElementById("r7").innerHTML=decimalAString(rango[0]);
-    document.getElementById("r8").innerHTML=decimalAString(rango[1]);
+    document.getElementById("r7").innerHTML=decimalAString(rango[0])+" - primer host";
+    document.getElementById("r8").innerHTML=decimalAString(rango[1])+" - ultimo host";
     document.getElementById("r9").innerHTML=decimalAString(broadcastDecimal);
     document.getElementById("r10").innerHTML=obtenerListadoDireccionesHost();
     }else{

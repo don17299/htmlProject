@@ -43,7 +43,7 @@
         <p class="d-inline">.</p>
         <input type="number" min="0" max="255" id="octanteHostId4" >
         <p class="d-inline">/</p>
-        <input type="number" min="15" max="30" id="mascaraSubRedId" name="nombreMascaraSubRedHostId">
+        <input type="number" min="8" max="30" id="mascaraSubRedId" name="nombreMascaraSubRedHostId">
         <p class="d-inline">  || bits para subred -> </p>
         <input type="number" min="0" max ="31" id="campoBitsSubNet"> 
         <br><br>
@@ -65,7 +65,8 @@
     <div>
         <p class="h5" > Escriba el numero de la subred (si deja el campo vacio se generará la tabla completa):</p> 
         <input class="d-inline" type="number" min="0" id="numeroSubred"> 
-        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="crearTablaParcial()">Consultar subred</button><h4 id="err2" class="text-danger d-inline mx-5"></h4>
+        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="crearTablaParcial()">Consultar subred</button>
+        <h4 id="err2" class="text-danger mx-5"></h4>
     </div>
     <br>
     <div id="contenedorTabla" >
@@ -105,10 +106,13 @@
         <p class="d-inline"> host:</p>
         <input class="d-inline" type="number" min="0" id="numeroHostBuscado"> 
         <button class="btn btn-primary d-inline" id="buscarHostEnSubRedBoton"  type="button" onclick="buscarHostEnSubRed()">buscar host en red</button>
+        
         <br><br>
         <h5 class="d-inline">Direccion del host:</h5>
-        <p class="d-inline mx-5" id="resultado7"></p>
+        <br>
         <h4 id="errorBuscarHostEnSubred" class="text-danger d-inline mx-5"></h4>
+        <p class="d-inline mx-5" id="resultado7"></p>
+        
     </div>
 
     <div>
@@ -116,54 +120,57 @@
     <h5>Rango completo de direcciones host de una subred:</h5><br>
     <input class="d-inline" type="number" min="0" id="numeroSubredRangoHost"> 
     <button class="btn btn-primary d-inline" id="calcularRangoHostSubred"  type="button" onclick="encontrarRangoParaHostSubred()">Consultar hosts en subred</button>
+    <br>
+    <h4 id="errorRango" class="text-danger d-inline mx-5"></h4>
     <br><br>
     <h6>SubRed:</h6>
     <p id="resultado8" class="text-danger"></p>
-    <h6>primera direccion de host:</h6>
     <p id="resultado9" class="text-primary"></p>
     <p>.<br>.<br>.</p>
     <p id="resultado10" class="text-primary"></p>
-    <h6>ultima direccion de host:</h6>
+    
     <h6>Broadcast:</h6>
-    <p id="resultado11" class="text-danger">hola</p><br>
+    <p id="resultado11" class="text-danger"></p><br>
     </div>
     <hr><br>
     <div>
         <h5>Determinar a que Subred pertenece la ip:</h5><br>
-        <input type="number" min="0" max="255" id="octanteHostId1" >
+        <input type="number" min="0" max="255" id="octanteHost1" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId2" >
+        <input type="number" min="0" max="255" id="octanteHost2" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId3" >
+        <input type="number" min="0" max="255" id="octanteHost3" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId4" >
-        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar Ip</button>
+        <input type="number" min="0" max="255" id="octanteHost4" >
+        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="determinarSubredDeHost()">Consultar Ip</button>
+        <br>
+        <h4 id="errHostSubred" class="text-danger d-inline mx-5"></h4>
         <br><br>
         <h5>Subred de la Ip:</h5><p id="resultado12"></p>
-        <h4 id="err3" class="text-danger d-inline mx-5"></h4>
+        
     </div>
     <hr><br>
     <div>
-        <h5>Direccion Ip Host1:</h5>
-        <input type="number" min="0" max="255" id="octanteHostId1" >
+        <h5>Direccion Ip 1:</h5>
+        <input type="number" min="0" max="255" id="octanteHost1,1" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId2" >
+        <input type="number" min="0" max="255" id="octanteHost1,2" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId3" >
+        <input type="number" min="0" max="255" id="octanteHost1,3" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId4" >
+        <input type="number" min="0" max="255" id="octanteHost1,4" >
         <br><br>
-        <h5>Direccion Ip Host2:</h5>
-        <input type="number" min="0" max="255" id="octanteHostId1" >
+        <h5>Direccion Ip 2:</h5>
+        <input type="number" min="0" max="255" id="octanteHost2,1" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId2" >
+        <input type="number" min="0" max="255" id="octanteHost2,2" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId3" >
+        <input type="number" min="0" max="255" id="octanteHost2,3" >
         <p class="d-inline">.</p>
-        <input type="number" min="0" max="255" id="octanteHostId4" >
-        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Consultar Ip</button>
+        <input type="number" min="0" max="255" id="octanteHost2,4" >
+        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="determinarSubredDireccionesIp()">Consultar Ip</button>
         <br><br>
-        <h4 id="err4" class="text-danger d-inline mx-5"></h4>
+        <h4 id="errDirecciones1,2" class="text-danger d-inline mx-5"></h4>
         <h5>Respuesta:</h5><p id="resultado13"></p>
         
     </div>
