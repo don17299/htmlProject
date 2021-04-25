@@ -82,18 +82,20 @@
     <hr><br>
     <h5>Direccion de la Subred especifica:</h5>
     <br>
-    <input class="d-inline" type="number" min="0" id="numeroSubred1">
-    <button class="btn btn-primary d-inline" id="buscarbrodcast"  type="button" onclick="buscarBroadcastSubNet()">Consultar subred </button>
+    <input class="d-inline" type="number" min="0" id="direccionSubRedEspecifica">
+    <button class="btn btn-primary d-inline"   type="button" onclick="insertarDireccionSubredEspecifica()">Consultar subred </button>
     <br>
     <h5>Direccion de la subred: </h5><p id="resultado5"></p>
+    <h4 id="errorAlInsertarDireccionSubredEspecifica" class="text-danger d-inline mx-5"></h4>
     <hr><br>
     <div>
     <h5>Broadcast de una subred especifica:</h5>
     <br>
-    <input class="d-inline" type="number" min="0" id="numeroSubred">
-    <button class="btn btn-primary d-inline" id="buscarbrodcast"  type="button" onclick="buscarBroadcastSubNet()">Consultar broadcast </button>
+    <input class="d-inline" type="number" min="0" id="direccionBroadcastEspecifica">
+    <button class="btn btn-primary d-inline"   type="button" onclick="insertarDireccionBroadcastEspecifica()">Consultar broadcast </button>
     <br>
     <h5>Direccion de Broadcast: </h5><p id="resultado6"></p>
+    <h4 id="errorAlInsertarBroadcastEspecifica" class="text-danger d-inline mx-5"></h4>
     </div>
     <hr><br>
     <h5> Buscar host dentro de subred:</h5><br>
