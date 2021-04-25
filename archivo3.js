@@ -631,6 +631,63 @@ function insertarDireccionBroadcastEspecifica() {
 
         document.getElementById("errorAlInsertarBroadcastEspecifica").innerHTML = "Debe ingresar un numero de una direccion broadcast existente";
     }
+}
+
+/**
+ * Esta funcion se encarga de buscar un host que pertenesca a la subred buscada
+ * en caso de no estar se mostraran los avisos pertinentes
+ */
+function buscarHostEnSubRed(){
+
+    document.getElementById("errorBuscarHostEnSubred").innerHTML = "";
+    document.getElementById("resultado7").innerHTML = "";  
+
+    var numeroSubred, numeroHost, mensajeError="";
+    numeroSubred = document.getElementById("numeroSubredParaHost").value;
+    numeroHost = document.getElementById("numeroHostBuscado").value;
+    console.log(numeroSubred);
+    if(numeroSubred.length <= 0 || numeroHost.length <= 0){
+        document.getElementById("errorBuscarHostEnSubred").innerHTML="Campos vacios";
+
+    }else { 
+        if(0 <= numeroSubred && numeroSubred < dirSubred){
+            if(numeroHost>=0 && numeroHost < numHost){
+                var direccionHost = calcularDireccionHost(numeroSubred,numeroHost);
+                document.getElementById("resultado7").innerHTML = direccionHost;
+            }else{
+                document.getElementById("errorBuscarHostEnSubred").innerHTML="Numero de host fuera de rango, desde 0, hasta "+(numHost-1);
+            }
+        }else{
+            document.getElementById("errorBuscarHostEnSubred").innerHTML = "Ingrese Subredes que esten entre: 0 y " + (dirSubred - 1);
+        }   
+    }
+}
 
 
+function calcularDireccionHost(numeroSubred, numeroHost){
+
+    var direccionSubRedEspecifica = obtenerSubred(numeroSubred);
+    var direccionesHost = obtenerRangoDireccionesSubRed(direccionSubRedEspecifica, obtenerBroadcastSubred(direccionSubRedEspecifica));
+
+    for (var i = 0; i < numeroHost; i++){
+        direccionesHost[0][3]+=(1);
+            if(direccionesHost[3]==255){
+                direccionesHost[3]=0;
+                i++;
+                if(direccionesHost[2]<255){
+                    direccionesHost[2]=direccionesHost[2]+1;
+                }else{
+                    direccionesHost[2]=0
+                    if(direccionesHost[1]<255){
+                        direccionesHost[1]=direccionesHost[1]+1;
+                    }else{
+                        direccionesHost[1]=0;
+                        if(direccionesHost[0]<255){
+                            direccionesHost[0]=direccionesHost[0]+1;
+                        }
+                    }
+                }
+            }
+    }
+    return decimalAString(direccionesHost[0]);
 }

@@ -101,13 +101,14 @@
     <h5> Buscar host dentro de subred:</h5><br>
     <div>
         <p class="d-inline">Sub red:</p>
-        <input class="d-inline" type="number" min="0" id="numeroSubred"> 
+        <input class="d-inline" type="number" min="0" id="numeroSubredParaHost"> 
         <p class="d-inline"> host:</p>
-        <input class="d-inline" type="number" min="0" id="numeroSubred"> 
-        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">buscar host en red</button>
+        <input class="d-inline" type="number" min="0" id="numeroHostBuscado"> 
+        <button class="btn btn-primary d-inline" id="buscarHostEnSubRedBoton"  type="button" onclick="buscarHostEnSubRed()">buscar host en red</button>
         <br><br>
         <h5 class="d-inline">Direccion del host:</h5>
         <p class="d-inline mx-5" id="resultado7"></p>
+        <h4 id="errorBuscarHostEnSubred" class="text-danger d-inline mx-5"></h4>
     </div>
 
     <div>
