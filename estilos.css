@@ -20,7 +20,7 @@ table{
   overflow: scroll;
 }
 
-#buscarSubred, #buscarbrodcast{
+#buscarSubred, #buscarbrodcast,#generarSubred{
   padding: auto auto;
   margin-left: 10px;
   font-size: 12px;

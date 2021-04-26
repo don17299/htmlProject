@@ -63,6 +63,7 @@ function recibirDatos() {
         }
         else {
             isIpIngresada = true;
+            //hosts - 2 que serian la subred y el broadcast
             numHost = 2 ** (hostId - bitsSubred) - 2;
             dirSubred = 2 ** bitsSubred;
             obtenerMascara();
@@ -421,76 +422,25 @@ function limpiarFormulario() {
 
 }
 
-/*
-*ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
-*/
-function generarEjercicio3() {
-    //ingreso de datos
-    var isMascara=false;
-    var isIp=false;
-    var numero, bits=0;
-    
-    document.getElementById("octanteHostId1").value= Math.floor( Math.random() * 255);
-    document.getElementById("octanteHostId2").value= Math.floor( Math.random() * 255);
-    document.getElementById("octanteHostId3").value= Math.floor( Math.random() * 255);
-    var aaa =llenarUltimoOcteto()
-    document.getElementById("octanteHostId4").value= aaa;
-    leerDatos();
-    obtenerIp();
-    numero=validarNetRandom();
-    console.log(numero);
-    netId=Math.floor( Math.random() * (31 - numero) + numero);
-    document.getElementById("mascaraSubRedId").value= netId;
-    console.log("netId"+ netId);
-    console.log("la ultima id"+aaa);
-    bits=Math.floor( Math.random() * (31-netId));//(32bits totales - netId(bits de la red)-2 para garantizar host)+1 para que el random si tome todos los valores
-    document.getElementById("campoBitsSubNet").value= bits;
-    ejecutarTercerPunto();
-    /*
-
-    while(!isIp || !isMascara){
-    ip4=Math.floor( Math.random() * 255);
-    document.getElementById("octanteHostId4").value=ip4;
-    isIp=validarIp();
-    
-    
-    isMascara=validarNet();
-    console.log(ip4+" ,"+ numero);
-    }
-    
-    
-    
-    
-    // hola aqui he colocado un comentario
-    */
-
-    //punto1
-    //punto2
-    //punto3
-    //punto4
-    //punto5
-    //punto6
-    //punto7
-    //punto8
-    //punto9
-    //punto10
-    //punto11
-    //punto12
-
-
+/**
+ * genera una subred aleatoria para la tabla
+ */
+function generarSubredAleatoria(){
+    document.getElementById("numeroSubred").value=Math.floor( Math.random() * dirSubred);
+    crearTablaParcial();
 }
 
 /*
 *ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
 */
-function generarEjercicio3Dos() {
+function generarEjercicio3() {
     //ingreso de datos
     var numero;
     
     ip1= Math.floor( Math.random() * 255);
     ip2= Math.floor( Math.random() * 255);
     ip3= Math.floor( Math.random() * 255);
-    ip4=llenarUltimoOcteto()
+    ip4=llenarUltimoOcteto();
     obtenerIp();
     numero=validarNetRandom();
     netId=Math.floor( Math.random() * (31 - numero) + numero);
@@ -506,38 +456,64 @@ function generarEjercicio3Dos() {
     recibirDatos();
     llenarDatos();
     crearTablaTotal(dirSubred);
-    /*
 
-    while(!isIp || !isMascara){
-    ip4=Math.floor( Math.random() * 255);
-    document.getElementById("octanteHostId4").value=ip4;
-    isIp=validarIp();
+    document.getElementById("direccionSubRedEspecifica").value=Math.floor( Math.random() * (dirSubred));
+    insertarDireccionSubredEspecifica();
+
+    document.getElementById("direccionBroadcastEspecifica").value=Math.floor( Math.random() * (dirSubred));
+    insertarDireccionBroadcastEspecifica();
+
+    document.getElementById("numeroSubredParaHost").value=Math.floor( Math.random() * (dirSubred));
+    document.getElementById("numeroHostBuscado").value=Math.floor( Math.random() * (numHost));
+    buscarHostEnSubRed();
     
-    
-    isMascara=validarNet();
-    console.log(ip4+" ,"+ numero);
+    document.getElementById("numeroSubredRangoHost").value=Math.floor( Math.random() * (dirSubred));
+    encontrarRangoParaHostSubred();
+
+    var dirIp=[].concat(ipBinario);
+    for(var i = (netId); i < 32;i++){
+        dirIp[i]= Math.floor( Math.random()* 2);
     }
-    
-    
-    
-    
-    // hola aqui he colocado un comentario
-    */
+    var dirIpDecimal=binarioADecimal(dirIp);
 
-    //punto1
-    //punto2
-    //punto3
-    //punto4
-    //punto5
-    //punto6
-    //punto7
-    //punto8
-    //punto9
-    //punto10
-    //punto11
-    //punto12
+    document.getElementById("octanteHost1").value=dirIpDecimal[0];
+    document.getElementById("octanteHost2").value=dirIpDecimal[1];
+    document.getElementById("octanteHost3").value=dirIpDecimal[2];
+    document.getElementById("octanteHost4").value=dirIpDecimal[3];
+
+    determinarSubredDeHost();
+
+    var h1=[].concat(ipBinario);
+    for(var i = (netId); i < 32;i++){
+        h1[i]= Math.floor( Math.random()* 2);
+    }
+    var h1Decimal=binarioADecimal(h1);
+
+    document.getElementById("octanteHost1,1").value=h1Decimal[0];
+    document.getElementById("octanteHost1,2").value=h1Decimal[1];
+    document.getElementById("octanteHost1,3").value=h1Decimal[2];
+    document.getElementById("octanteHost1,4").value=h1Decimal[3];
+
+    var h2=[].concat(ipBinario);
+    for(var i = (netId); i < 32;i++){
+        h2[i]= Math.floor( Math.random()* 2);
+    }
+    var h2Decimal=binarioADecimal(h2);
+
+    document.getElementById("octanteHost2,1").value=h2Decimal[0];
+    document.getElementById("octanteHost2,2").value=h2Decimal[1];
+    document.getElementById("octanteHost2,3").value=h2Decimal[2];
+    document.getElementById("octanteHost2,4").value=h2Decimal[3];
+
+    determinarSubredDireccionesIp();
+
+    document.getElementById("numeroSubredUltimo").value=Math.floor( Math.random() * (dirSubred));
+    document.getElementById("cantidadH").value=Math.floor( Math.random() * (numHost-1)+1);
+    darNdireccionesIp()
 
 
+
+    
 }
 
 
@@ -550,6 +526,8 @@ function llenarUltimoOcteto(){
     for(var i = 0; i <6;i++){
         arregloNumeros[i]= Math.floor( Math.random()* 2);
     }
+    arregloNumeros[4]=0;
+    arregloNumeros[5]=0;
     arregloNumeros[6]=0;
     arregloNumeros[7]=0;
     var numero = 0;

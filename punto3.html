@@ -48,7 +48,7 @@
         <input type="number" min="0" max ="31" id="campoBitsSubNet"> 
         <br><br>
         <button class="btn btn-primary" type="button" onclick="ejecutarTercerPunto()">Ingresar</button>
-        <button class="btn btn-primary d-inline" type="button" onclick="generarEjercicio3Dos()">Generar Ejercicio</button>
+        <button class="btn btn-primary d-inline" type="button" onclick="generarEjercicio3()">Generar Ejercicio</button>
         <h4 id="err" class="text-danger d-inline mx-5"></h4>
     </form>
 
@@ -66,6 +66,7 @@
         <p class="h5" > Escriba el numero de la subred (si deja el campo vacio se generará la tabla completa):</p> 
         <input class="d-inline" type="number" min="0" id="numeroSubred"> 
         <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="crearTablaParcial()">Consultar subred</button>
+        <button class="btn btn-primary d-inline" id="generarSubred"  type="button" onclick="generarSubredAleatoria()">Generar subred</button>
         <h4 id="err2" class="text-danger mx-5"></h4>
     </div>
     <br>
