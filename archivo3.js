@@ -473,7 +473,12 @@ function llenarDatos() {
         document.getElementById("err").innerHTML = "";
         document.getElementById("resultado1").innerHTML = decimalAString(redDecimal);
         document.getElementById("resultado2").innerHTML = decimalAString(broadcastDecimal);
+        if(dirSubred!=1){
+            console.log(dirSubred);
         document.getElementById("resultado3").innerHTML = dirSubred - 2;
+        }else{
+            document.getElementById("resultado3").innerHTML =0;
+        }
         document.getElementById("resultado4").innerHTML = numHost;
     } else {
         document.getElementById("err").innerHTML = mensajeErr;
