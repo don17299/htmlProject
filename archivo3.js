@@ -429,11 +429,15 @@ function generarEjercicio3() {
     var isMascara=false;
     var isIp=false;
     var numero, bits=0;
-
     
     document.getElementById("octanteHostId1").value= Math.floor( Math.random() * 255);
     document.getElementById("octanteHostId2").value= Math.floor( Math.random() * 255);
     document.getElementById("octanteHostId3").value= Math.floor( Math.random() * 255);
+    document.getElementById("octanteHostId4").value= llenarUltimoOcteto();
+
+
+    /*
+
     while(!isIp || !isMascara){
     ip4=Math.floor( Math.random() * 255);
     document.getElementById("octanteHostId4").value=ip4;
@@ -448,7 +452,7 @@ function generarEjercicio3() {
     document.getElementById("campoBitsSubNet").value= bits;
     ejecutarTercerPunto();
     // hola aqui he colocado un comentario
-
+    */
 
     //punto1
     //punto2
@@ -464,6 +468,25 @@ function generarEjercicio3() {
     //punto12
 
 
+}
+
+function llenarUltimoOcteto(){
+    var arregloNumeros = new Array(8);
+    for(var i = 0; i <6;i++){
+        arregloNumeros[i]= Math.floor( Math.random()* 2);
+    }
+    arregloNumeros[6]=0;
+    arregloNumeros[7]=0;
+    var numero = 0;
+    console.log(arregloNumeros);
+    var arregloNumeros1 = arregloNumeros.reverse();
+    console.log(arregloNumeros1);
+    for(var i = 0; i <8;i++){
+        numero = numero + arregloNumeros1[i]*(2**i);
+        console.log(numero);
+    }
+    console.log(numero);
+    return numero;
 }
 
 /**
