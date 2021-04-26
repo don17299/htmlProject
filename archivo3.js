@@ -53,6 +53,7 @@ function recibirDatos() {
         validez = false;
         mensajeErr = "Campos Vacios";
     } else {
+        hostId = 32 - netId;
         if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 0 || netId > 30 || bitsSubred >= (hostId-1)) {
             validez = false;
             mensajeErr = "Valores fuera de Rango";
@@ -62,7 +63,6 @@ function recibirDatos() {
         }
         else {
             isIpIngresada = true;
-            hostId = 32 - netId;
             numHost = 2 ** (hostId - bitsSubred) - 2;
             dirSubred = 2 ** bitsSubred;
             obtenerMascara();
@@ -479,6 +479,68 @@ function generarEjercicio3() {
 
 
 }
+
+/*
+*ejecuta todos los metodos asociados al primer punto dados unos datos aleatorios
+*/
+function generarEjercicio3Dos() {
+    //ingreso de datos
+    var numero;
+    
+    ip1= Math.floor( Math.random() * 255);
+    ip2= Math.floor( Math.random() * 255);
+    ip3= Math.floor( Math.random() * 255);
+    ip4=llenarUltimoOcteto()
+    obtenerIp();
+    numero=validarNetRandom();
+    netId=Math.floor( Math.random() * (31 - numero) + numero);
+    bitsSubred=Math.floor( Math.random() * (31-netId));//(32bits totales - netId(bits de la red)-2 para garantizar host)+1 para que el random si tome todos los valores
+
+    document.getElementById("octanteHostId1").value=ip1;
+    document.getElementById("octanteHostId2").value=ip2;
+    document.getElementById("octanteHostId3").value=ip3;
+    document.getElementById("octanteHostId4").value=ip4;
+    document.getElementById("mascaraSubRedId").value=netId;
+    document.getElementById("campoBitsSubNet").value=bitsSubred;
+    
+    recibirDatos();
+    llenarDatos();
+    crearTablaTotal(dirSubred);
+    /*
+
+    while(!isIp || !isMascara){
+    ip4=Math.floor( Math.random() * 255);
+    document.getElementById("octanteHostId4").value=ip4;
+    isIp=validarIp();
+    
+    
+    isMascara=validarNet();
+    console.log(ip4+" ,"+ numero);
+    }
+    
+    
+    
+    
+    // hola aqui he colocado un comentario
+    */
+
+    //punto1
+    //punto2
+    //punto3
+    //punto4
+    //punto5
+    //punto6
+    //punto7
+    //punto8
+    //punto9
+    //punto10
+    //punto11
+    //punto12
+
+
+}
+
+
 /**
  * 
  * @returns el numero en decimal para el ultimo octeto respetando los dos espacios en 0
