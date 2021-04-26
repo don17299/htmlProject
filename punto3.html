@@ -151,6 +151,7 @@
     </div>
     <hr><br>
     <div>
+        <h5>Determinar si dos ip estan en la misma subred:</h5><br>
         <h5>Direccion Ip 1:</h5>
         <input type="number" min="0" max="255" id="octanteHost1,1" >
         <p class="d-inline">.</p>
@@ -179,11 +180,13 @@
         <h5>Listar n direcciones ip de una subred:</h5>
         <br>
         <p class="d-inline">Cantidad de host:</p>
-        <input class="d-inline" type="number" min="0" id="numeroSubred"> 
+        <input class="d-inline" type="number" min="0" id="cantidadH"> 
         <p class="d-inline"> Subred:</p>
-        <input class="d-inline" type="number" min="0" id="numeroSubred"> 
-        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="buscarSubNet()">Calcular</button>
+        <input class="d-inline" type="number" min="0" id="numeroSubredUltimo"> 
+        <button class="btn btn-primary d-inline" id="buscarSubred"  type="button" onclick="darNdireccionesIp()">Calcular</button>
         <br><br>
+        <h4 id="errNDirecciones" class="text-danger d-inline mx-5"></h4>
+        <br>
         <h5 class="d-inline">Direcciones del host:</h5>
         <p class="d-inline mx-5" id="resultado14"></p>
     </div>
