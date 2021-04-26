@@ -53,7 +53,7 @@ function recibirDatos() {
         validez = false;
         mensajeErr = "Campos Vacios";
     } else {
-        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 0 || netId > 30 || bitsSubred > hostId || bitsSubred < 1) {
+        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 0 || netId > 30 || bitsSubred >= (hostId-1)) {
             validez = false;
             mensajeErr = "Valores fuera de Rango";
         } else if (!validarIp() || !validarNet()) {
@@ -428,7 +428,7 @@ function generarEjercicio3() {
     //ingreso de datos
     var isMascara=false;
     var isIp=false;
-    var numero, net=0, bits=0;
+    var numero, bits=0;
 
     
     document.getElementById("octanteHostId1").value= Math.floor( Math.random() * 255);
@@ -439,14 +439,13 @@ function generarEjercicio3() {
     document.getElementById("octanteHostId4").value=ip4;
     isIp=validarIp();
     numero=validarNetRandom();
-    net=Math.floor( Math.random() * (30 - numero) + numero);
+    netId=Math.floor( Math.random() * (30 - numero) + numero);
     isMascara=validarNet();
-    console.log(net+", "+ ip4+" ,"+ numero);
+    console.log(ip4+" ,"+ numero);
     }
-    document.getElementById("mascaraSubRedId").value= net;
-    bits=Math.floor( Math.random() * ((32-net)- 1) +1);
+    document.getElementById("mascaraSubRedId").value= netId;
+    bits=Math.floor( Math.random() * ((32-netId-2)));
     document.getElementById("campoBitsSubNet").value= bits;
-    console.log("hola perra"+bits)
     ejecutarTercerPunto();
 
 
