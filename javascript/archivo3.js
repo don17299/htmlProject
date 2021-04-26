@@ -33,7 +33,7 @@ var mensajeErr;
 var isIpIngresada = false;
 
 /*
-* ejecuta todos los metodos asociados al primer punto dados unos datos especificados por el usuario.
+* ejecuta todos los metodos asociados a la primera parte de la ejecucion del tercer punto.
 */
 function ejecutarTercerPunto() {
     leerDatos();
@@ -87,12 +87,19 @@ function validarNet() {
     }
 }
 
+/**
+ * envia la posicion del ultimo 1 para validar la netid
+ * @returns retorna la posicion del ultimo 1 de la ip ingresada en binario
+ */
 function validarNetRandom() {
     var posicion = ipBinario.lastIndexOf(1);
     return posicion + 1;
 }
 
-
+/**
+ * Metodo que valida la ip para que existan host.
+ * @returns true si la ip es valida false en caso contrario
+ */
 function validarIp() {
     obtenerIp();
     if (ipBinario[30] == 1 || ipBinario[31] == 1) {
@@ -539,7 +546,7 @@ function llenarUltimoOcteto(){
 }
 
 /**
- * llena todos los campos de respuesta
+ * llena todos los campos de respuesta de la primera parte del 3 punto
  */
 function llenarDatos() {
     if (validez) {
@@ -621,7 +628,7 @@ function crearTablaTotal(filas) {
 
 
 /**
- * Genera una tabla con los valores de una subred especifica
+ * Genera una tabla con los valores de una subred especifica si el valor ingresado es vacio se hace la tabla de todas las subredes
  */
 function crearTablaParcial() {
 
@@ -879,6 +886,14 @@ function determinarSubredDeHost() {
     }
 }
 
+/**
+ * Retorna la direccion de la subred de una ip ingresada
+ * @param {*} octH1 octeto 1
+ * @param {*} octH2 octeto 2
+ * @param {*} octH3 octeto 3
+ * @param {*} octH4 octeto 4
+ * @returns retorna un arreglo con la ip de la subred del host en binario
+ */
 function retornarSubredHost(octH1, octH2, octH3, octH4) {
     var verdad = true;
     var ipHostBinario;
@@ -908,6 +923,9 @@ function retornarSubredHost(octH1, octH2, octH3, octH4) {
     }
 }
 
+/**
+ * Determina si dos ip ingresadas tienen la misma subred o no
+ */
 function determinarSubredDireccionesIp() {
     if (isIpIngresada) {
         document.getElementById("resultado13").innerHTML = "";
@@ -950,6 +968,9 @@ function determinarSubredDireccionesIp() {
 
 }
 
+/**
+ * dadas una cantidad n y la subred en decimal se generan n direcciones de host de la subred ingresada con limite en 1022
+ */
 function darNdireccionesIp() {
     if (isIpIngresada) {
         var numSubred = document.getElementById("numeroSubredUltimo").value;

@@ -152,40 +152,6 @@ function decimalABinario(ip){
 }
 
 /*
-*@param binario array de una direccion ip en binario en el cual hay 4 posiciones correspondientes a los cuatro octetos.
-*A partir de la ip en binario obtiene la ip en decimal
-*@return retorna un array con la direccion en decimal
-*/
-function binarioADecimalArrayDArrays(binario){
-    var decimal= new Array();
-    var n1,n2,n3,n4;
-
-    for(var i=0;i<binario.length;i++){
-        for(var j=0;j<binario[i],length;j++){
-            for(var k=7;k>=0;k--){
-               if(j==0){
-                   n1=n1+2**k;
-               }else if(j==1){
-                   n2=n2+2**k;
-                   } else if(j==2){
-                       n3=n3+2**k;
-                   }else if(j==3){
-                       n4=n4+2**k;
-                   }
-               
-            }
-        }
-    }
-
-    decimal.push(n1);
-    decimal.push(n2);
-    decimal.push(n3);
-    decimal.push(n4);
-
-    return decimal;
-}
-
-/*
 *@param binario array de una direccion ip en binario.
 *A partir de la ip en binario obtiene la ip en decimal
 *@return retorna un array con la direccion en decimal
@@ -260,7 +226,7 @@ function obtenerExtremosDirecciones(){
 }
 
 /*
-*Obtiene cada direccion de host que puesde obtenerse.
+*Obtiene cada direccion de host que puesde obtenerse limitada a 1022 host.
 @return retorna la cadena que contiene todas las direcciones de host.
 */
 function obtenerListadoDireccionesHost(){
