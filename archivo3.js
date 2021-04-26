@@ -53,7 +53,7 @@ function recibirDatos() {
         validez = false;
         mensajeErr = "Campos Vacios";
     } else {
-        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 0 || netId > 30 || bitsSubred > hostId || bitsSubred < 1) {
+        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 0 || netId > 30 || bitsSubred > hostId) {
             validez = false;
             mensajeErr = "Valores fuera de Rango";
         } else if (!validarIp() || !validarNet()) {
@@ -433,17 +433,24 @@ function generarEjercicio3() {
     
     document.getElementById("octanteHostId1").value= Math.floor( Math.random() * 255);
     document.getElementById("octanteHostId2").value= Math.floor( Math.random() * 255);
-    document.getElementById("octanteHostId3").value= Math.floor( Math.random() * 255);
-    while(!isIp || !isMascara){
-    ip4=Math.floor( Math.random() * 255);
-    document.getElementById("octanteHostId4").value=ip4;
-    isIp=validarIp();
+    document.getElementById("octanteHostId3").value= Math.floor( Math.random() * 255); 
+    document.getElementById("octanteHostId4").value= Math.floor( Math.random() * 255);
+    obtenerIp();
+    ipBinario[30]=0;
+    ipBinario[31]=0;
+    console.log("el ip4 "+ipDecimal[3]);
     numero=validarNetRandom();
     net=Math.floor( Math.random() * (30 - numero) + numero);
-    isMascara=validarNet();
-    console.log(net+", "+ ip4+" ,"+ numero);
-    }
     document.getElementById("mascaraSubRedId").value= net;
+    
+   /* while(!isMascara){
+        isIp=validarIp();
+        
+        
+        isMascara=validarNet();
+        console.log(net+", "+ ip4+" ,"+ numero);
+    }*/
+    
     bits=Math.floor( Math.random() * ((32-net)- 1) +1);
     document.getElementById("campoBitsSubNet").value= bits;
     console.log("hola perra"+bits)
