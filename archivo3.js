@@ -433,24 +433,34 @@ function generarEjercicio3() {
     document.getElementById("octanteHostId1").value= Math.floor( Math.random() * 255);
     document.getElementById("octanteHostId2").value= Math.floor( Math.random() * 255);
     document.getElementById("octanteHostId3").value= Math.floor( Math.random() * 255);
-    document.getElementById("octanteHostId4").value= llenarUltimoOcteto();
-
-
+    var aaa =llenarUltimoOcteto()
+    document.getElementById("octanteHostId4").value= aaa;
+    leerDatos();
+    obtenerIp();
+    numero=validarNetRandom();
+    console.log(numero);
+    netId=Math.floor( Math.random() * (31 - numero) + numero);
+    document.getElementById("mascaraSubRedId").value= netId;
+    console.log("netId"+ netId);
+    console.log("la ultima id"+aaa);
+    bits=Math.floor( Math.random() * (31-netId));//(32bits totales - netId(bits de la red)-2 para garantizar host)+1 para que el random si tome todos los valores
+    document.getElementById("campoBitsSubNet").value= bits;
+    ejecutarTercerPunto();
     /*
 
     while(!isIp || !isMascara){
     ip4=Math.floor( Math.random() * 255);
     document.getElementById("octanteHostId4").value=ip4;
     isIp=validarIp();
-    numero=validarNetRandom();
-    netId=Math.floor( Math.random() * (30 - numero) + numero);
+    
+    
     isMascara=validarNet();
     console.log(ip4+" ,"+ numero);
     }
-    document.getElementById("mascaraSubRedId").value= netId;
-    bits=Math.floor( Math.random() * ((32-netId-2)));
-    document.getElementById("campoBitsSubNet").value= bits;
-    ejecutarTercerPunto();
+    
+    
+    
+    
     // hola aqui he colocado un comentario
     */
 
@@ -469,7 +479,10 @@ function generarEjercicio3() {
 
 
 }
-
+/**
+ * 
+ * @returns el numero en decimal para el ultimo octeto respetando los dos espacios en 0
+ */
 function llenarUltimoOcteto(){
     var arregloNumeros = new Array(8);
     for(var i = 0; i <6;i++){
@@ -478,14 +491,10 @@ function llenarUltimoOcteto(){
     arregloNumeros[6]=0;
     arregloNumeros[7]=0;
     var numero = 0;
-    console.log(arregloNumeros);
     var arregloNumeros1 = arregloNumeros.reverse();
-    console.log(arregloNumeros1);
     for(var i = 0; i <8;i++){
         numero = numero + arregloNumeros1[i]*(2**i);
-        console.log(numero);
     }
-    console.log(numero);
     return numero;
 }
 
@@ -498,7 +507,7 @@ function llenarDatos() {
         document.getElementById("resultado1").innerHTML = decimalAString(redDecimal);
         document.getElementById("resultado2").innerHTML = decimalAString(broadcastDecimal);
         if(dirSubred!=1){
-            console.log(dirSubred);
+           // console.log(dirSubred);
         document.getElementById("resultado3").innerHTML = dirSubred - 2;
         }else{
             document.getElementById("resultado3").innerHTML =0;
