@@ -447,6 +447,7 @@ function generarEjercicio3() {
     bits=Math.floor( Math.random() * ((32-netId-2)));
     document.getElementById("campoBitsSubNet").value= bits;
     ejecutarTercerPunto();
+    // hola aqui he colocado un comentario
 
 
     //punto1
