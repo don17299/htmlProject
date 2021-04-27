@@ -290,7 +290,7 @@ function generarEjercicio2(){
     ip2=Math.floor( Math.random() * 255);
     ip3=Math.floor( Math.random() * 255);
     ip4=Math.floor( Math.random() * 255);
-    netId=Math.floor( Math.random() * (30 - 15) + 15);
+    netId=Math.floor( Math.random() * 30);
     document.getElementById("octanteHostId1").value=ip1;
     document.getElementById("octanteHostId2").value=ip2;
     document.getElementById("octanteHostId3").value=ip3;

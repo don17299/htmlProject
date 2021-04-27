@@ -348,7 +348,7 @@ function generarEjercicio1(){
     isIp=validarIp();
     }
 
-    netId=Math.floor( Math.random() * (30 - 15) + 15);
+    netId=Math.floor( Math.random() * 30);
     numero=validarNetRandom();
     while(!isMascara){
     netId=Math.floor( Math.random() * (30 - numero) + numero);
