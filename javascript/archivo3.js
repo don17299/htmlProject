@@ -5,7 +5,7 @@ Juan David Jimenez Lopez
 Jorge Ivan Hurtado Imbachi
 */
 
-//cada octeto de la ip ingresada, netid, hostid, dirrecciones para los host, bits para subred y direcciones de subred.
+//cada octeto de la ip ingresada, netid, hostid, dirrecciones para los host, bits para subred y  cantidad de direcciones de subred.
 var ip1, ip2, ip3, ip4, netId, hostId, numHost, bitsSubred, dirSubred;
 //mascara de subred binaria.
 var maskBinario = new Array(32);
@@ -23,7 +23,7 @@ var broadcastDecimal = new Array();
 var redBinario = new Array(32);
 //red decimal.
 var redDecimal = new Array();
-//arreglo que almacena la primera direccion host y la ultima.
+//Matriz que almacena la primera direccion host y la ultima.
 var rango = new Array(2);
 //determina si la ejecucion es valida o no (errores).
 var validez = true;
@@ -187,22 +187,24 @@ function obtenerRed() {
  * @returns retorna la direccion ip de la subred en binario
  */
 function obtenerSubred(numeroSubRed) {
-    var arreglo = decimalABinario(numeroSubRed);
+    //numero de la subred en binario
+    var numeroSubBinario = decimalABinario(numeroSubRed);
+    //copia de la red principal que se convertira en la subred en binario
     var subred = [].concat(redBinario);
 
-    if (arreglo.length < bitsSubred) {
-        while (arreglo.length < bitsSubred) {
-            arreglo.unshift(0);
+    if (numeroSubBinario.length < bitsSubred) {
+        while (numeroSubBinario.length < bitsSubred) {
+            numeroSubBinario.unshift(0);
         }
     } else {
-        if (arreglo.length > bitsSubred) {
-            while (arreglo.length > bitsSubred) {
-                arreglo.shift();
+        if (numeroSubBinario.length > bitsSubred) {
+            while (numeroSubBinario.length > bitsSubred) {
+                numeroSubBinario.shift();
             }
         }
     }
-    for (var j = 0; j < arreglo.length; j++) {
-        subred[(j + netId)] = arreglo[j];
+    for (var j = 0; j < numeroSubBinario.length; j++) {
+        subred[(j + netId)] = numeroSubBinario[j];
     }
 
     return subred;
