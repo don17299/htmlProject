@@ -623,7 +623,7 @@ function crearTablaTotal(filas) {
 
 
     for (var i = 0; i <= filas; i++) {
-        if (i < 1022) {
+        if (i <= 1023) {
             tblBody.appendChild(obtenerFilaTabla(i, filas));
         } else {
             i = filas;
