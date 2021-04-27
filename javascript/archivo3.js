@@ -39,7 +39,7 @@ function ejecutarTercerPunto() {
     leerDatos();
     recibirDatos();
     llenarDatos();
-    crearTablaTotal(dirSubred);
+    crearTablaTotal(dirSubred - 1);
 
 }
 
@@ -54,7 +54,7 @@ function recibirDatos() {
         mensajeErr = "Campos Vacios";
     } else {
         hostId = 32 - netId;
-        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 0 || netId > 30 || bitsSubred >= (hostId-1)) {
+        if (ip1 < 0 || ip1 > 255 || ip2 < 0 || ip2 > 255 || ip3 < 0 || ip3 > 255 || ip4 < 0 || ip4 > 255 || netId < 0 || netId > 30 || bitsSubred >= (hostId - 1)) {
             validez = false;
             mensajeErr = "Valores fuera de Rango";
         } else if (!validarIp() || !validarNet()) {
@@ -432,8 +432,8 @@ function limpiarFormulario() {
 /**
  * genera una subred aleatoria para la tabla
  */
-function generarSubredAleatoria(){
-    document.getElementById("numeroSubred").value=Math.floor( Math.random() * dirSubred);
+function generarSubredAleatoria() {
+    document.getElementById("numeroSubred").value = Math.floor(Math.random() * dirSubred);
     crearTablaParcial();
 }
 
@@ -443,84 +443,84 @@ function generarSubredAleatoria(){
 function generarEjercicio3() {
     //ingreso de datos
     var numero;
-    
-    ip1= Math.floor( Math.random() * 255);
-    ip2= Math.floor( Math.random() * 255);
-    ip3= Math.floor( Math.random() * 255);
-    ip4=llenarUltimoOcteto();
-    obtenerIp();
-    numero=validarNetRandom();
-    netId=Math.floor( Math.random() * (31 - numero) + numero);
-    bitsSubred=Math.floor( Math.random() * (31-netId));//(32bits totales - netId(bits de la red)-2 para garantizar host)+1 para que el random si tome todos los valores
 
-    document.getElementById("octanteHostId1").value=ip1;
-    document.getElementById("octanteHostId2").value=ip2;
-    document.getElementById("octanteHostId3").value=ip3;
-    document.getElementById("octanteHostId4").value=ip4;
-    document.getElementById("mascaraSubRedId").value=netId;
-    document.getElementById("campoBitsSubNet").value=bitsSubred;
-    
+    ip1 = Math.floor(Math.random() * 255);
+    ip2 = Math.floor(Math.random() * 255);
+    ip3 = Math.floor(Math.random() * 255);
+    ip4 = llenarUltimoOcteto();
+    obtenerIp();
+    numero = validarNetRandom();
+    netId = Math.floor(Math.random() * (31 - numero) + numero);
+    bitsSubred = Math.floor(Math.random() * (31 - netId));//(32bits totales - netId(bits de la red)-2 para garantizar host)+1 para que el random si tome todos los valores
+
+    document.getElementById("octanteHostId1").value = ip1;
+    document.getElementById("octanteHostId2").value = ip2;
+    document.getElementById("octanteHostId3").value = ip3;
+    document.getElementById("octanteHostId4").value = ip4;
+    document.getElementById("mascaraSubRedId").value = netId;
+    document.getElementById("campoBitsSubNet").value = bitsSubred;
+
     recibirDatos();
     llenarDatos();
     crearTablaTotal(dirSubred);
 
-    document.getElementById("direccionSubRedEspecifica").value=Math.floor( Math.random() * (dirSubred));
+    document.getElementById("direccionSubRedEspecifica").value = Math.floor(Math.random() * (dirSubred));
     insertarDireccionSubredEspecifica();
 
-    document.getElementById("direccionBroadcastEspecifica").value=Math.floor( Math.random() * (dirSubred));
+    document.getElementById("direccionBroadcastEspecifica").value = Math.floor(Math.random() * (dirSubred));
     insertarDireccionBroadcastEspecifica();
 
-    document.getElementById("numeroSubredParaHost").value=Math.floor( Math.random() * (dirSubred));
-    document.getElementById("numeroHostBuscado").value=Math.floor( Math.random() * (numHost));
+    document.getElementById("numeroSubredParaHost").value = Math.floor(Math.random() * (dirSubred));
+    document.getElementById("numeroHostBuscado").value = Math.floor(Math.random() * (numHost));
     buscarHostEnSubRed();
-    
-    document.getElementById("numeroSubredRangoHost").value=Math.floor( Math.random() * (dirSubred));
+
+    document.getElementById("numeroSubredRangoHost").value = Math.floor(Math.random() * (dirSubred));
     encontrarRangoParaHostSubred();
 
-    var dirIp=[].concat(ipBinario);
-    for(var i = (netId); i < 32;i++){
-        dirIp[i]= Math.floor( Math.random()* 2);
+    var dirIp = [].concat(ipBinario);
+    for (var i = (netId); i < 32; i++) {
+        dirIp[i] = Math.floor(Math.random() * 2);
     }
-    var dirIpDecimal=binarioADecimal(dirIp);
+    var dirIpDecimal = binarioADecimal(dirIp);
 
-    document.getElementById("octanteHost1").value=dirIpDecimal[0];
-    document.getElementById("octanteHost2").value=dirIpDecimal[1];
-    document.getElementById("octanteHost3").value=dirIpDecimal[2];
-    document.getElementById("octanteHost4").value=dirIpDecimal[3];
+    document.getElementById("octanteHost1").value = dirIpDecimal[0];
+    document.getElementById("octanteHost2").value = dirIpDecimal[1];
+    document.getElementById("octanteHost3").value = dirIpDecimal[2];
+    document.getElementById("octanteHost4").value = dirIpDecimal[3];
 
     determinarSubredDeHost();
 
-    var h1=[].concat(ipBinario);
-    for(var i = (netId); i < 32;i++){
-        h1[i]= Math.floor( Math.random()* 2);
+    var h1 = [].concat(ipBinario);
+    for (var i = (netId); i < 32; i++) {
+        h1[i] = Math.floor(Math.random() * 2);
     }
-    var h1Decimal=binarioADecimal(h1);
+    var h1Decimal = binarioADecimal(h1);
 
-    document.getElementById("octanteHost1,1").value=h1Decimal[0];
-    document.getElementById("octanteHost1,2").value=h1Decimal[1];
-    document.getElementById("octanteHost1,3").value=h1Decimal[2];
-    document.getElementById("octanteHost1,4").value=h1Decimal[3];
+    document.getElementById("octanteHost1,1").value = h1Decimal[0];
+    document.getElementById("octanteHost1,2").value = h1Decimal[1];
+    document.getElementById("octanteHost1,3").value = h1Decimal[2];
+    document.getElementById("octanteHost1,4").value = h1Decimal[3];
 
-    var h2=[].concat(ipBinario);
-    for(var i = (netId); i < 32;i++){
-        h2[i]= Math.floor( Math.random()* 2);
+    var h2 = [].concat(ipBinario);
+    for (var i = (netId); i < 32; i++) {
+        h2[i] = Math.floor(Math.random() * 2);
     }
-    var h2Decimal=binarioADecimal(h2);
+    var h2Decimal = binarioADecimal(h2);
 
-    document.getElementById("octanteHost2,1").value=h2Decimal[0];
-    document.getElementById("octanteHost2,2").value=h2Decimal[1];
-    document.getElementById("octanteHost2,3").value=h2Decimal[2];
-    document.getElementById("octanteHost2,4").value=h2Decimal[3];
+    document.getElementById("octanteHost2,1").value = h2Decimal[0];
+    document.getElementById("octanteHost2,2").value = h2Decimal[1];
+    document.getElementById("octanteHost2,3").value = h2Decimal[2];
+    document.getElementById("octanteHost2,4").value = h2Decimal[3];
 
     determinarSubredDireccionesIp();
 
-    document.getElementById("numeroSubredUltimo").value=Math.floor( Math.random() * (dirSubred));
-    document.getElementById("cantidadH").value=Math.floor( Math.random() * (numHost-1)+1);
+    document.getElementById("numeroSubredUltimo").value = Math.floor(Math.random() * (dirSubred));
+    document.getElementById("cantidadH").value = Math.floor(Math.random() * (numHost - 1) + 1);
     darNdireccionesIp()
 
 
 
-    
+
 }
 
 
@@ -528,19 +528,19 @@ function generarEjercicio3() {
  * 
  * @returns el numero en decimal para el ultimo octeto respetando los dos espacios en 0
  */
-function llenarUltimoOcteto(){
+function llenarUltimoOcteto() {
     var arregloNumeros = new Array(8);
-    for(var i = 0; i <6;i++){
-        arregloNumeros[i]= Math.floor( Math.random()* 2);
+    for (var i = 0; i < 6; i++) {
+        arregloNumeros[i] = Math.floor(Math.random() * 2);
     }
-    arregloNumeros[4]=0;
-    arregloNumeros[5]=0;
-    arregloNumeros[6]=0;
-    arregloNumeros[7]=0;
+    arregloNumeros[4] = 0;
+    arregloNumeros[5] = 0;
+    arregloNumeros[6] = 0;
+    arregloNumeros[7] = 0;
     var numero = 0;
     var arregloNumeros1 = arregloNumeros.reverse();
-    for(var i = 0; i <8;i++){
-        numero = numero + arregloNumeros1[i]*(2**i);
+    for (var i = 0; i < 8; i++) {
+        numero = numero + arregloNumeros1[i] * (2 ** i);
     }
     return numero;
 }
@@ -553,11 +553,11 @@ function llenarDatos() {
         document.getElementById("err").innerHTML = "";
         document.getElementById("resultado1").innerHTML = decimalAString(redDecimal);
         document.getElementById("resultado2").innerHTML = decimalAString(broadcastDecimal);
-        if(dirSubred!=1){
-           // console.log(dirSubred);
-        document.getElementById("resultado3").innerHTML = dirSubred - 2;
-        }else{
-            document.getElementById("resultado3").innerHTML =0;
+        if (dirSubred != 1) {
+            // console.log(dirSubred);
+            document.getElementById("resultado3").innerHTML = dirSubred - 2;
+        } else {
+            document.getElementById("resultado3").innerHTML = 0;
         }
         document.getElementById("resultado4").innerHTML = numHost;
     } else {
@@ -568,6 +568,48 @@ function llenarDatos() {
 
 }
 
+
+function obtenerFilaTabla(numSubred, filas) {
+    var subred = obtenerSubred((numSubred));
+    var broadcastS = obtenerBroadcastSubred(subred);
+    var rangoS = obtenerRangoDireccionesSubRed(subred, broadcastS);
+
+    var fila = document.createElement("tr");
+
+    var celda1 = document.createElement("td");
+    var textoCelda = document.createTextNode((numSubred));
+    celda1.appendChild(textoCelda);
+    celda1.setAttribute("border", "1");
+    fila.appendChild(celda1);
+
+    var celda2 = document.createElement("td");
+    var textoCelda = document.createTextNode(decimalAString(binarioADecimal(subred)));
+    celda2.appendChild(textoCelda);
+    celda2.setAttribute("border", "1");
+    fila.appendChild(celda2);
+
+    var celda3 = document.createElement("td");
+    var textoCelda = document.createTextNode(decimalAString(rangoS[0]) + " / " + decimalAString(rangoS[1]));
+    celda3.appendChild(textoCelda);
+    celda3.setAttribute("border", "1");
+    fila.appendChild(celda3);
+
+    var celda4 = document.createElement("td");
+    var textoCelda = document.createTextNode(decimalAString(binarioADecimal(broadcastS)));
+    celda4.appendChild(textoCelda);
+    celda4.setAttribute("border", "1");
+    fila.appendChild(celda4);
+
+    if (numSubred == 0 || numSubred == filas) {
+        var celda5 = document.createElement("td");
+        var textoCelda = document.createTextNode("subred no utilizable");
+        celda5.appendChild(textoCelda);
+        celda5.setAttribute("border", "1");
+        fila.appendChild(celda5);
+    }
+
+    return fila;
+}
 
 /**
  * Genera una tabla con los valores de todas las subredes posibles
@@ -580,46 +622,21 @@ function crearTablaTotal(filas) {
     var tblBody = document.createElement("tbody");
 
 
-    for (var i = 0; i < filas; i++) {
-        var subred = obtenerSubred((i));
-        var broadcastS = obtenerBroadcastSubred(subred);
-        var rangoS = obtenerRangoDireccionesSubRed(subred, broadcastS);
+    for (var i = 0; i <= filas; i++) {
+        if (i < 1022) {
+            tblBody.appendChild(obtenerFilaTabla(i, filas));
+        } else {
+            i = filas;
+            var fila = document.createElement("tr");
 
-        var fila = document.createElement("tr");
-
-        var celda1 = document.createElement("td");
-        var textoCelda = document.createTextNode((i));
-        celda1.appendChild(textoCelda);
-        celda1.setAttribute("border", "1");
-        fila.appendChild(celda1);
-
-        var celda2 = document.createElement("td");
-        var textoCelda = document.createTextNode(decimalAString(binarioADecimal(subred)));
-        celda2.appendChild(textoCelda);
-        celda2.setAttribute("border", "1");
-        fila.appendChild(celda2);
-
-        var celda3 = document.createElement("td");
-        var textoCelda = document.createTextNode(decimalAString(rangoS[0]) + " / " + decimalAString(rangoS[1]));
-        celda3.appendChild(textoCelda);
-        celda3.setAttribute("border", "1");
-        fila.appendChild(celda3);
-
-        var celda4 = document.createElement("td");
-        var textoCelda = document.createTextNode(decimalAString(binarioADecimal(broadcastS)));
-        celda4.appendChild(textoCelda);
-        celda4.setAttribute("border", "1");
-        fila.appendChild(celda4);
-
-        if (i == 0 || i == filas - 1) {
-            var celda5 = document.createElement("td");
-            var textoCelda = document.createTextNode("subred no utilizable");
-            celda5.appendChild(textoCelda);
-            celda5.setAttribute("border", "1");
-            fila.appendChild(celda5);
+            var celda1 = document.createElement("td");
+            var textoCelda = document.createTextNode(("..."));
+            celda1.appendChild(textoCelda);
+            celda1.setAttribute("border", "1");
+            fila.appendChild(celda1);
+            tblBody.appendChild(fila);
+            tblBody.appendChild(obtenerFilaTabla(i, filas));
         }
-
-        tblBody.appendChild(fila);
     }
     tabla.appendChild(tblBody);
 
@@ -649,45 +666,7 @@ function crearTablaParcial() {
                 tabla.innerHTML = "<tr><td>Numero subred</td><td>ip subred</td><td>rango de host</td><td>broadcast de la sudred</td></tr>";
                 var tblBody = document.createElement("tbody");
 
-                var subred = obtenerSubred((numeroSubred));
-                var broadcastS = obtenerBroadcastSubred(subred);
-                var rangoS = obtenerRangoDireccionesSubRed(subred, broadcastS);
-
-                var fila = document.createElement("tr");
-
-                var celda1 = document.createElement("td");
-                var textoCelda = document.createTextNode((numeroSubred));
-                celda1.appendChild(textoCelda);
-                celda1.setAttribute("border", "1");
-                fila.appendChild(celda1);
-
-                var celda2 = document.createElement("td");
-                var textoCelda = document.createTextNode(decimalAString(binarioADecimal(subred)));
-                celda2.appendChild(textoCelda);
-                celda2.setAttribute("border", "1");
-                fila.appendChild(celda2);
-
-                var celda3 = document.createElement("td");
-                var textoCelda = document.createTextNode(decimalAString(rangoS[0]) + " / " + decimalAString(rangoS[1]));
-                celda3.appendChild(textoCelda);
-                celda3.setAttribute("border", "1");
-                fila.appendChild(celda3);
-
-                var celda4 = document.createElement("td");
-                var textoCelda = document.createTextNode(decimalAString(binarioADecimal(broadcastS)));
-                celda4.appendChild(textoCelda);
-                celda4.setAttribute("border", "1");
-                fila.appendChild(celda4);
-
-                if (numeroSubred == 0 || numeroSubred == dirSubred - 1) {
-                    var celda5 = document.createElement("td");
-                    var textoCelda = document.createTextNode("subred no utilizable");
-                    celda5.appendChild(textoCelda);
-                    celda5.setAttribute("border", "1");
-                    fila.appendChild(celda5);
-                }
-
-                tblBody.appendChild(fila);
+                tblBody.appendChild(obtenerFilaTabla(numeroSubred, dirSubred - 1));
 
                 tabla.appendChild(tblBody);
 
