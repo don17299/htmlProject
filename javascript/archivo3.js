@@ -650,7 +650,7 @@ function crearTablaParcial() {
 
         if (numeroSubred.length <= 0) {
             document.getElementById("err2").innerHTML = "";
-            crearTablaTotal(dirSubred);
+            crearTablaTotal(dirSubred-1);
         } else {
 
             if (numeroSubred >= 0 && numeroSubred <= dirSubred - 1) {
