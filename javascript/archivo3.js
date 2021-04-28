@@ -36,10 +36,13 @@ var isIpIngresada = false;
 * ejecuta todos los metodos asociados a la primera parte de la ejecucion del tercer punto.
 */
 function ejecutarTercerPunto() {
+    limpiarFormulario();
+    limpiarEntradas();
     leerDatos();
     recibirDatos();
     llenarDatos();
     crearTablaTotal(dirSubred - 1);
+    
 
 }
 
@@ -183,8 +186,13 @@ function obtenerRed() {
 
 /**
  * Obtiene la direccion ip de la subred especificada
- * @param {} numeroSubRed es la subred en formato decimal 
+ * @param {} numeroSubRed es el numero de la subred 
  * @returns retorna la direccion ip de la subred en binario
+ * 
+ * 11111111 000000000 01010101 ,111,10011 /24 nid=24 hid=8 bitsS=3
+ * 
+ * 7
+ * 000000000000000111
  */
 function obtenerSubred(numeroSubRed) {
     //numero de la subred en binario
@@ -192,17 +200,14 @@ function obtenerSubred(numeroSubRed) {
     //copia de la red principal que se convertira en la subred en binario
     var subred = [].concat(redBinario);
 
-    if (numeroSubBinario.length < bitsSubred) {
         while (numeroSubBinario.length < bitsSubred) {
             numeroSubBinario.unshift(0);
         }
-    } else {
-        if (numeroSubBinario.length > bitsSubred) {
-            while (numeroSubBinario.length > bitsSubred) {
-                numeroSubBinario.shift();
-            }
+
+        while (numeroSubBinario.length > bitsSubred) {
+            numeroSubBinario.shift();
         }
-    }
+
     for (var j = 0; j < numeroSubBinario.length; j++) {
         subred[(j + netId)] = numeroSubBinario[j];
     }
@@ -228,7 +233,7 @@ function obtenerBroadcastSubred(subredBinario) {
 
 /*
 *@param ip array de la ip en decimal.
-*A partir una direccion decimal obtiene su direccion binaria.
+*A partir una direccion decimal obtiene su direccion binaria en un octeto.
 *@return retorna un array con la direccion en binario.
 */
 function decimalABinario(ip) {
@@ -248,40 +253,6 @@ function decimalABinario(ip) {
 }
 
 /*
-*@param binario array de una direccion ip en binario en el cual hay 4 posiciones correspondientes a los cuatro octetos.
-*A partir de la ip en binario obtiene la ip en decimal
-*@return retorna un array con la direccion en decimal
-*/
-function binarioADecimalArrayDArrays(binario) {
-    var decimal = new Array();
-    var n1, n2, n3, n4;
-
-    for (var i = 0; i < binario.length; i++) {
-        for (var j = 0; j < binario[i], length; j++) {
-            for (var k = 7; k >= 0; k--) {
-                if (j == 0) {
-                    n1 = n1 + 2 ** k;
-                } else if (j == 1) {
-                    n2 = n2 + 2 ** k;
-                } else if (j == 2) {
-                    n3 = n3 + 2 ** k;
-                } else if (j == 3) {
-                    n4 = n4 + 2 ** k;
-                }
-
-            }
-        }
-    }
-
-    decimal.push(n1);
-    decimal.push(n2);
-    decimal.push(n3);
-    decimal.push(n4);
-
-    return decimal;
-}
-
-/*
 *@param binario array de una direccion ip en binario.
 *A partir de la ip en binario obtiene la ip en decimal
 *@return retorna un array con la direccion en decimal
@@ -293,22 +264,13 @@ function binarioADecimal(binario) {
     binario = binario.reverse();
     for (var i = 0; i < binario.length; i++) {
         if (i < 8) {
-            if (binario[i] == 1) {
-                n1 = n1 + 2 ** i;
-            }
+                n1 = n1 + binario[i]*(2 ** i);
         } else if (i >= 8 && i <= 15) {
-            if (binario[i] == 1) {
-                n2 = n2 + 2 ** (i - 8);
-            }
+                n2 = n2 + binario[i]* (2 ** (i - 8));
         } else if (i >= 16 && i <= 23) {
-            if (binario[i] == 1) {
-                n3 = n3 + 2 ** (i - 16);
-            }
+                n3 = n3 + binario[i]* (2 ** (i - 16));
         } else if (i >= 24 && i <= 31) {
-            if (binario[i] == 1) {
-                n4 = n4 + 2 ** (i - 24);
-            }
-
+                n4 = n4 + binario[i]* (2 ** (i - 24));
         }
     }
 
@@ -343,14 +305,14 @@ function decimalAString(decimal) {
  * obtiene el rango de direcciones de los host en la red principal
  */
 function obtenerExtremosDirecciones() {
-    var hostInicial = new Array(), hostPenultimo = new Array(), hostInicialD, hostPenultimoD;
+    var hostInicial = new Array(), hostUltimo = new Array(), hostInicialD, hostPenultimoD;
 
     hostInicial = [].concat(redBinario);
-    hostPenultimo = [].concat(broadcastBinario);
+    hostUltimo = [].concat(broadcastBinario);
     hostInicial[31] = 1;
-    hostPenultimo[31] = 0;
+    hostUltimo[31] = 0;
     hostInicialD = binarioADecimal(hostInicial);
-    hostPenultimoD = binarioADecimal(hostPenultimo);
+    hostPenultimoD = binarioADecimal(hostUltimo);
     rango[0] = hostInicialD;
     rango[1] = hostPenultimoD;
 }
@@ -362,15 +324,15 @@ function obtenerExtremosDirecciones() {
  * @returns 
  */
 function obtenerRangoDireccionesSubRed(subred, broadcast) {
-    var hostInicial = new Array(), hostPenultimo = new Array(), hostInicialD, hostPenultimoD;
+    var hostInicial = new Array(), hostUltimo = new Array(), hostInicialD, hostPenultimoD;
     var rangoSubred = new Array(2);
 
     hostInicial = [].concat(subred);
-    hostPenultimo = [].concat(broadcast);
+    hostUltimo = [].concat(broadcast);
     hostInicial[31] = 1;
-    hostPenultimo[31] = 0;
+    hostUltimo[31] = 0;
     hostInicialD = binarioADecimal(hostInicial);
-    hostPenultimoD = binarioADecimal(hostPenultimo);
+    hostPenultimoD = binarioADecimal(hostUltimo);
     rangoSubred[0] = hostInicialD;
     rangoSubred[1] = hostPenultimoD;
 
@@ -379,7 +341,7 @@ function obtenerRangoDireccionesSubRed(subred, broadcast) {
 
 
 /*
-*Obtiene cada direccion de host que puesde obtenerse.
+*Obtiene cada direccion de host que puede obtenerse.
 @return retorna la cadena que contiene todas las direcciones de host.
 */
 function obtenerListadoDireccionesHost() {
@@ -429,6 +391,28 @@ function limpiarFormulario() {
     document.getElementById("resultado13").innerHTML = "";
     document.getElementById("resultado14").innerHTML = "";
 
+}
+
+function limpiarEntradas() {
+    document.getElementById("direccionSubRedEspecifica").value ="";
+    document.getElementById("direccionBroadcastEspecifica").value = "";
+    document.getElementById("numeroSubredParaHost").value= "";
+    document.getElementById("numeroHostBuscado").value = "";
+    document.getElementById("numeroSubredRangoHost").value = "";
+    document.getElementById("octanteHost1").value = "";
+    document.getElementById("octanteHost2").value = "";
+    document.getElementById("octanteHost3").value = "";
+    document.getElementById("octanteHost4").value = "";
+    document.getElementById("octanteHost1,1").value = "";
+    document.getElementById("octanteHost1,2").value = "";
+    document.getElementById("octanteHost1,3").value = "";
+    document.getElementById("octanteHost1,4").value = "";
+    document.getElementById("octanteHost2,1").value = "";
+    document.getElementById("octanteHost2,2").value = "";
+    document.getElementById("octanteHost2,3").value = "";
+    document.getElementById("octanteHost2,4").value = "";
+    document.getElementById("numeroSubredUltimo").value = "";
+    document.getElementById("cantidadH").value = "";
 }
 
 /**
@@ -745,10 +729,9 @@ function buscarHostEnSubRed() {
         document.getElementById("errorBuscarHostEnSubred").innerHTML = "";
         document.getElementById("resultado7").innerHTML = "";
 
-        var numeroSubred, numeroHost, mensajeError = "";
+        var numeroSubred, numeroHost;
         numeroSubred = document.getElementById("numeroSubredParaHost").value;
         numeroHost = document.getElementById("numeroHostBuscado").value;
-        console.log(numeroSubred);
         if (numeroSubred.length <= 0 || numeroHost.length <= 0) {
             document.getElementById("errorBuscarHostEnSubred").innerHTML = "Campos vacios";
 
@@ -806,8 +789,8 @@ function calcularDireccionHost(numeroSubred, numeroHost) {
 
 
 /**
- * funcion que hace esto queEl  rango  completo  de  direcciones  
- * que  se  pueden  asignar  a  los  hosts  de  una  subred específica
+ * funcion que Devuelve El  rango  completo  de  direcciones  
+ * que  se  pueden  asignar  a  los  hosts  de  una  subred específica, la ip y el broadcast
  */
 function encontrarRangoParaHostSubred() {
     if (isIpIngresada) {

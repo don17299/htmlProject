@@ -207,28 +207,19 @@ function decimalABinario(ip){
 *@return retorna un array con la direccion en decimal
 */
 function binarioADecimal(binario){
-    var n1=0, n2=0, n3=0, n4=0;
-    var decimal= new Array();
+    var n1 = 0, n2 = 0, n3 = 0, n4 = 0;
+    var decimal = new Array();
 
-    binario=binario.reverse();
-    for(var i=0;i<binario.length;i++){
-        if(i<8){
-           if(binario[i]==1){
-            n1=n1+2**i;
-                    }
-        }else if(i>=8 && i<=15){
-                if(binario[i]==1){
-                 n2=n2+2**(i-8);
-                         }
-        } else if(i>=16 && i<=23){
-                if(binario[i]==1){
-                 n3=n3+2**(i-16);
-                         }
-        } else if(i>=24 && i<=31){
-                if(binario[i]==1){
-                 n4=n4+2**(i-24);
-                         }
-
+    binario = binario.reverse();
+    for (var i = 0; i < binario.length; i++) {
+        if (i < 8) {
+                n1 = n1 + binario[i]*(2 ** i);
+        } else if (i >= 8 && i <= 15) {
+                n2 = n2 + binario[i]* (2 ** (i - 8));
+        } else if (i >= 16 && i <= 23) {
+                n3 = n3 + binario[i]* (2 ** (i - 16));
+        } else if (i >= 24 && i <= 31) {
+                n4 = n4 + binario[i]* (2 ** (i - 24));
         }
     }
 
@@ -236,7 +227,7 @@ function binarioADecimal(binario){
     decimal.push(n3);
     decimal.push(n2);
     decimal.push(n1);
-    binario=binario.reverse();
+    binario = binario.reverse();
     return decimal;
 }
 
