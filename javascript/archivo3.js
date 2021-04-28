@@ -393,6 +393,9 @@ function limpiarFormulario() {
 
 }
 
+/**
+ * Limpiar los campos y respuestas de ejercicios anteriores
+ */
 function limpiarEntradas() {
     document.getElementById("direccionSubRedEspecifica").value ="";
     document.getElementById("direccionBroadcastEspecifica").value = "";
@@ -554,7 +557,12 @@ function llenarDatos() {
 
 }
 
-
+/**
+ * obtener una fila llena para la tabla
+ * @param {*} numSubred numero de la subred
+ * @param {*} filas numero maximo de la subred
+ * @returns 
+ */
 function obtenerFilaTabla(numSubred, filas) {
     var subred = obtenerSubred((numSubred));
     var broadcastS = obtenerBroadcastSubred(subred);

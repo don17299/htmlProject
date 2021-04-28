@@ -45,12 +45,19 @@ function recibirDatos(){
         mensajeErr="Valores fuera de Rango";
         }
         else {
-        hostId=32-netId;
-        numHost=2**hostId-2;
         obtenerIp();
         obtenerMascara();
-        obtenerBroadCast();
         obtenerRed();
+            if(decimalAString(ipDecimal)==decimalAString(redDecimal)){
+                validez=false;
+                mensajeErr="Ha ingresado una red, ingrese un host";
+
+            }else{
+        obtenerBroadCast();
+        hostId=32-netId;
+        numHost=2**hostId-2;
+            }
+        
         }
     }
 }
