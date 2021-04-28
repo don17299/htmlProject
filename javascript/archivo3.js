@@ -452,7 +452,7 @@ function generarEjercicio3() {
 
     recibirDatos();
     llenarDatos();
-    crearTablaTotal(dirSubred);
+    crearTablaTotal(dirSubred-1);
 
     document.getElementById("direccionSubRedEspecifica").value = Math.floor(Math.random() * (dirSubred));
     insertarDireccionSubredEspecifica();
