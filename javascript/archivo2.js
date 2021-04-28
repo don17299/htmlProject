@@ -48,6 +48,8 @@ function recibirDatos(){
         obtenerIp();
         obtenerMascara();
         obtenerRed();
+        console.log(decimalAString(ipDecimal))+"\n";
+        console.log(decimalAString(redDecimal));
             if(decimalAString(ipDecimal)==decimalAString(redDecimal)){
                 validez=false;
                 mensajeErr="Ha ingresado una red, ingrese un host";
@@ -91,6 +93,7 @@ function obtenerMascara(){
 *Obtiene la ip en binario y decimal a partir de los datos ip1,ip2,ip3,ip4.
 */
 function obtenerIp(){
+    ipDecimal=new Array();
     var array1=new Array(8), array2=new Array(8), array3=new Array(8), array4=new Array(8);
     array1=decimalABinario(ip1);
     array2=decimalABinario(ip2);
