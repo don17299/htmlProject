@@ -746,11 +746,11 @@ function buscarHostEnSubRed() {
 
         } else {
             if (0 <= numeroSubred && numeroSubred < dirSubred) {
-                if (numeroHost >= 0 && numeroHost < numHost) {
+                if (numeroHost > 0 && numeroHost <= numHost) {
                     var direccionHost = calcularDireccionHost(numeroSubred, numeroHost);
                     document.getElementById("resultado7").innerHTML = direccionHost;
                 } else {
-                    document.getElementById("errorBuscarHostEnSubred").innerHTML = "Numero de host fuera de rango, desde 0, hasta " + (numHost - 1);
+                    document.getElementById("errorBuscarHostEnSubred").innerHTML = "Numero de host fuera de rango, desde 1, hasta " + numHost;
                 }
             } else {
                 document.getElementById("errorBuscarHostEnSubred").innerHTML = "Ingrese Subredes que esten entre: 0 y " + (dirSubred - 1);
@@ -772,8 +772,12 @@ function calcularDireccionHost(numeroSubred, numeroHost) {
 
     var direccionSubRedEspecifica = obtenerSubred(numeroSubred);
     var direccionesHost = obtenerRangoDireccionesSubRed(direccionSubRedEspecifica, obtenerBroadcastSubred(direccionSubRedEspecifica));
+    
+    if(numeroHost==1){
+        return decimalAString(direccionesHost[0]);
+    }
 
-    for (var i = 0; i < numeroHost; i++) {
+    for (var i = 1; i < numeroHost; i++) {
         direccionesHost[0][3] += (1);
         if (direccionesHost[3] == 255) {
             direccionesHost[3] = 0;
@@ -848,7 +852,7 @@ function determinarSubredDeHost() {
                 document.getElementById("errHostSubred").innerHTML = "";
                 var ipHostBinario = retornarSubredHost(octH1, octH2, octH3, octH4);
                 if (ipHostBinario != null) {
-                    document.getElementById("resultado12").innerHTML = decimalAString(binarioADecimal(ipHostBinario));
+                    document.getElementById("resultado12").innerHTML = "la subred es la: "+descubrirNumeroSubred(ipHostBinario)+" direccion: "+decimalAString(binarioADecimal(ipHostBinario));
                 } else {
                     document.getElementById("errHostSubred").innerHTML = "Debe ingresar una direccion ip que este en el mismo ambito que la principal";
                 }
@@ -857,6 +861,24 @@ function determinarSubredDeHost() {
     } else {
         document.getElementById("errHostSubred").innerHTML = "Debe ingresar La direccion ip principal, la net id y los bits para subred antes de consultar";
     }
+}
+
+/**
+ * metodo que obtiene el numero que reprenta la subred
+ * @param {*} ipSubred direccion en binario de la subred
+ * @returns 
+ */
+function descubrirNumeroSubred(ipSubred){
+
+    var elevado=0, numero=0;
+
+    for(var i=((netId-1)+bitsSubred);i>=netId;i--){
+        numero=numero+2**(elevado)*(ipSubred[i]);
+        elevado++;
+    }
+
+    console.log(numero);
+    return numero;
 }
 
 /**
@@ -924,11 +946,13 @@ function determinarSubredDireccionesIp() {
                 if (ipHostBinario1 != null && ipHostBinario2 != null) {
                     var cadena1 = decimalAString(binarioADecimal(ipHostBinario1));
                     var cadena2 = decimalAString(binarioADecimal(ipHostBinario2));
+                    var subred1 = descubrirNumeroSubred(ipHostBinario1);
+                    var subred2 = descubrirNumeroSubred(ipHostBinario2);
 
                     if (cadena1 == cadena2) {
-                        document.getElementById("resultado13").innerHTML = "Ambas direcciones Ip pertenecen a la subred:" + cadena1;
+                        document.getElementById("resultado13").innerHTML = "SI, Ambas direcciones Ip pertenecen a la subred: " + subred1 +" direccion: "+cadena1;
                     } else {
-                        document.getElementById("resultado13").innerHTML = "La Ip 1 pertenece a la subred:" + cadena1 + " y la Ip 2 pertenece a la subred:" + cadena2;
+                        document.getElementById("resultado13").innerHTML = "No, no pertenecen a la misma subred, La Ip 1 pertenece a la subred: "+subred1+" direccion: " + cadena1 + " y la Ip 2 pertenece a la subred: " + subred2 +" direccion: "+ cadena2;
                     }
                 } else {
                     document.getElementById("errDirecciones1,2").innerHTML = "Debe ingresar direcciones ip que esten en el mismo ambito que la principal";
